@@ -30,6 +30,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('/check (GET)', () => {
+    healthCheckResponse.environment = 'LOCAL';
     return request(app.getHttpServer())
       .get('/check')
       .expect(200)

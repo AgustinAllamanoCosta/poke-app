@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthCheckResponse } from './types/healthCheck';
 import { healthCheckResponse, systemDate } from '../test/fixture/healthCheck';
+import { ConfigService } from '@nestjs/config';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -12,10 +13,12 @@ describe('AppController', () => {
 
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [AppService, ConfigService],
     }).compile();
 
     appController = app.get<AppController>(AppController);
+    const configurationService: ConfigService = app.get<ConfigService>(ConfigService);
+    configurationService.set('environment','test');
   });
 
   afterEach(() => {
