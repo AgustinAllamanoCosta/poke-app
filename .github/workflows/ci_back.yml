@@ -118,7 +118,7 @@ jobs:
         with:
           name: production-build
           path: |
-            ./dist
+            ./back/dist
 
   version:
     runs-on: ubuntu-latest
