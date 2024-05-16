@@ -17,8 +17,9 @@ describe('AppController', () => {
     }).compile();
 
     appController = app.get<AppController>(AppController);
-    const configurationService: ConfigService = app.get<ConfigService>(ConfigService);
-    configurationService.set('environment','test');
+    const configurationService: ConfigService =
+      app.get<ConfigService>(ConfigService);
+    configurationService.set('environment', 'test');
   });
 
   afterEach(() => {

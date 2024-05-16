@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { HealthCheckResponse } from './types/healthCheck';
 import { ConfigService } from '@nestjs/config';
-import configuration from './config/configuration';
 
 @Injectable()
 export class AppService {
-
-  constructor(private readonly configuration: ConfigService){}
+  constructor(private readonly configuration: ConfigService) {}
 
   public getHello(): string {
     return 'Hello World!';
