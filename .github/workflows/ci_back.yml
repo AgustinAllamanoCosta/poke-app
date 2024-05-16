@@ -1,0 +1,156 @@
+name: Continues_Integration_Back
+
+on:
+  push:
+    paths:
+      - back/**
+    branches:
+      - "main"
+
+jobs:
+  install-dep:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies with Node.js 21.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+      - run: yarn
+
+  lint:
+    runs-on: ubuntu-latest
+
+    needs: install-dep
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Run Lint with Node.js 21.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+      - run: yarn lint
+
+  test:
+    runs-on: ubuntu-latest
+
+    needs: lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Run Test with Node.js 21.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+      - run: yarn test
+
+  build:
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Use Node.js 21.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+
+      - name: Build with envs
+        env:
+          DOTENV_KEY: ${{ secrets.DOTENV_KEY_PROD }}
+        run: yarn build
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: |
+            ./dist
+
+  version:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Cache changelog
+        id: cache-changelog
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/CHANGELOG.md
+          key: ${{ runner.os }}-changelog-${{ hashFiles('**/CHANGELOG.md') }}
+
+      - name: Install Latest Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+
+      - name: Configure commiter
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+
+      - name: Generate Version
+        run: |
+          yarn release
+
+      - name: Pushing Version
+        run: |
+          git pull
+          git commit --allow-empty -m "[skip ci]"
+          git push --follow-tags origin master
+
