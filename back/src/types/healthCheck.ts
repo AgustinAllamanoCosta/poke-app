@@ -1,3 +1,3 @@
 export type HealthCheckResponse = {
-  systemTime: string,
+  systemTime: string;
 };

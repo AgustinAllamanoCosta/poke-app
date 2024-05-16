@@ -10,6 +10,6 @@ export class AppService {
   public getHealthCheck(): HealthCheckResponse {
     return {
       systemTime: new Date().toISOString(),
-    }
+    };
   }
 }

@@ -8,7 +8,6 @@ describe('AppController', () => {
   let appController: AppController;
 
   beforeEach(async () => {
-
     jest.useFakeTimers().setSystemTime(systemDate);
 
     const app: TestingModule = await Test.createTestingModule({
@@ -19,7 +18,7 @@ describe('AppController', () => {
     appController = app.get<AppController>(AppController);
   });
 
-  afterEach(()=>{
+  afterEach(() => {
     jest.clearAllTimers();
   });
 
@@ -29,7 +28,6 @@ describe('AppController', () => {
     });
 
     it('should return the system time', () => {
-
       const healthCheck: HealthCheckResponse = appController.getCheck();
 
       expect(healthCheck).toStrictEqual(healthCheckResponse);
