@@ -7,6 +7,10 @@ on:
     branches:
       - "main"
 
+defaults:
+  run:
+    working-directory: "back"
+
 jobs:
   install-dep:
     runs-on: ubuntu-latest
