@@ -31,14 +31,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            **/node_modules
+           ./back/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies with Node.js 21.x
         uses: actions/setup-node@v4
         with:
           node-version: 21.x
-      - run: yarn
+      - run: pwd && yarn
 
   lint:
     runs-on: ubuntu-latest
@@ -54,7 +54,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            **/node_modules
+            ./back/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run Lint with Node.js 21.x
@@ -77,7 +77,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            **/node_modules
+            ./back/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run Test with Node.js 21.x
@@ -100,7 +100,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            **/node_modules
+            ./back/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Use Node.js 21.x
@@ -134,7 +134,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            **/node_modules
+            ./back/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Cache changelog
