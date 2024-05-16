@@ -163,5 +163,5 @@ jobs:
         run: |
           git pull
           git commit --allow-empty -m "[skip ci]"
-          git push --follow-tags origin master
+          git push --follow-tags origin main
 
