@@ -15,6 +15,10 @@ export const BasicConfig: Configuration = {
     ? process.env.POSTGRES_PASSWORD
     : '',
   database_name: process.env.POSTGRES_DB ? process.env.POSTGRES_DB : '',
+  auth: process.env.AUTH ? +process.env.AUTH : 1,
+  oauth_client: process.env.OAUTH_CLIENT
+    ? process.env.OAUTH_CLIENT
+    : 'oauth-config-not-loaded',
 };
 
 export const basicConfigFactory = () => BasicConfig;

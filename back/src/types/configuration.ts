@@ -5,4 +5,6 @@ export type Configuration = {
   database_username: string;
   database_password: string;
   database_name: string;
+  auth: number;
+  oauth_client: string;
 };

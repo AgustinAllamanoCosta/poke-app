@@ -9,6 +9,7 @@ const Docker = require('dockerode');
 describe('AppController (e2e)', () => {
   jest.setTimeout(6000);
   let app: INestApplication;
+  const authToken: string = 'Bearer some-auth-token.from.google';
 
   const docker = new Docker();
 
@@ -65,6 +66,7 @@ describe('AppController (e2e)', () => {
   it('/ (GET)', () => {
     return request(app.getHttpServer())
       .get('/')
+      .set('Authorization', authToken)
       .expect(200)
       .expect('Hello World!');
   });
@@ -74,6 +76,7 @@ describe('AppController (e2e)', () => {
     healthCheckResponse.environment = 'LOCAL';
     return request(app.getHttpServer())
       .get('/check')
+      .set('Authorization', authToken)
       .expect(200)
       .expect(healthCheckResponse);
   });
