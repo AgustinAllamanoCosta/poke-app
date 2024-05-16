@@ -8,7 +8,6 @@ describe('AppController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
-
     jest.useFakeTimers().setSystemTime(systemDate);
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -19,7 +18,7 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  afterEach(()=>{
+  afterEach(() => {
     jest.clearAllTimers();
   });
 
@@ -30,11 +29,10 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 
-  it('/check (GET)', ()=>{
+  it('/check (GET)', () => {
     return request(app.getHttpServer())
       .get('/check')
       .expect(200)
       .expect(healthCheckResponse);
   });
-
 });
