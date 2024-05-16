@@ -28,7 +28,7 @@ describe('AppController', () => {
       expect(appController.getHello()).toBe('Hello World!');
     });
 
-    it('should retunr the system time', () => {
+    it('should return the system time', () => {
 
       const healthCheck: HealthCheckResponse = appController.getCheck();
 
