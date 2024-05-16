@@ -1,6 +1,12 @@
 name: Continues_Integration_Back
 
 on:
+  workflow_dispatch:
+    inputs:
+      input:
+        description: "Test"
+        required: false
+        default: "World"
   push:
     paths:
       - back/**
