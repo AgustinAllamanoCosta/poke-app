@@ -58,7 +58,7 @@ jobs:
           node-version: 21.x
       - run: yarn lint
 
-build:
+  build:
     runs-on: ubuntu-latest
 
     needs: lint
@@ -80,9 +80,7 @@ build:
         with:
           node-version: 21.x
 
-      - name: Build with envs
-        env:
-          DOTENV_KEY: ${{ secrets.DOTENV_KEY_PROD }}
+      - name: Build 
         run: yarn build
 
       - name: Archive production artifacts
@@ -142,46 +140,3 @@ build:
           git pull
           git commit --allow-empty -m "[skip ci]"
           git push --follow-tags origin master
-
-  deploy_on_firebase:
-    runs-on: ubuntu-latest
-
-    needs: end_to_end_testing
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Cache dependencies
-        id: cache-dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./front/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install Latest Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 21.x
-
-      - name: Download production artifact
-        uses: actions/download-artifact@v4.1.0
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          name: production-build
-          path: ./front/dist
-
-      - name: Configure Envoironment
-        shell: bash
-        run: |
-          yarn vault:pull production .env --dotenvMe='${{ secrets.DOTENV_ME }}' --yes
-          mv .env ./front/dist
-
-      - name: Deploy to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0.7.1
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GETTHINGSDONE_391622 }}'
-          projectId: poke-app-f14fd
-          channelId: live
