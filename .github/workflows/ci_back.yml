@@ -197,7 +197,7 @@ jobs:
     - name: Deploy with docker commands
       uses: garygrossgarten/github-action-ssh@release
       with:
-        command: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u allamanocostaagustin@gmail.com --password-stdin && docker pull ghcr.io/agustinallamanocosta/poke:main &&  docker container run --name poke_back -d -p 8080:3000 ghcr.io/agustinallamanocosta/poke:main 
+        command: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u allamanocostaagustin@gmail.com --password-stdin && docker pull ghcr.io/agustinallamanocosta/poke-app:main &&  docker container run --name poke_back -d -p 8080:3000 ghcr.io/agustinallamanocosta/poke-app:main 
         host: ${{ secrets.REMOTE_ADDRESS }}
         username: agustinallamanocosta
         privateKey: ${{ secrets.GCLOUD_KEY}}
