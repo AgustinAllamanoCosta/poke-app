@@ -1,0 +1,80 @@
+{
+  "name": "poke-app-front",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "node -r dotenv/config ./node_modules/.bin/vite",
+    "build": "yarn clean && tsc && node -r dotenv/config ./node_modules/.bin/vite build --mode production",
+    "clean": "npx rimraf dist",
+    "preview": "node -r dotenv/config ./node_modules/.bin/vite preview ",
+    "test": "NODE_ENV=test jest --passWithNoTests",
+    "lint:format": "prettier . --write --single-quote --single-attribute-per-line",
+    "lint:check": "prettier . --check --single-quote --single-attribute-per-line",
+    "release": "standard-version",
+    "vault:add": "npx dotenv-vault new",
+    "vault:login": "npx dotenv-vault@latest login",
+    "vault:open": "npx dotenv-vault@latest open",
+    "vault:build": "npx dotenv-vault@latest build",
+    "vault:keys": "npx dotenv-vault keys",
+    "vault:pull": "npx dotenv-vault@latest pull",
+    "vault:push": "npx dotenv-vault@latest push"
+  },
+  "dependencies": {
+    "@react-oauth/google": "^0.11.0",
+    "@types/firebase": "^3.2.1",
+    "@vitejs/plugin-react": "^3.1.0",
+    "axios": "^1.4.0",
+    "dotenv": "^16.4.1",
+    "dotenv-vault": "1.26.0",
+    "firebase": "^10.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "^6.21.1",
+    "react-router-dom": "^6.21.1",
+    "styled-components": "^6.0.0-rc.3",
+    "typescript": "^4.9.3",
+    "uuid": "^9.0.1",
+    "vite": "^4.1.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^29.5.2",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@types/react-test-renderer": "^18.0.7",
+    "@types/uuid": "^9.0.7",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-transform-stub": "^2.0.0",
+    "mol-conventional-changelog": "^1.4.3",
+    "prettier": "3.1.0",
+    "prop-types": "^15.8.1",
+    "react-test-renderer": "^18.2.0",
+    "rimraf": "^5.0.5",
+    "standard-version": "^9.5.0",
+    "ts-jest": "^29.1.1"
+  },
+  "jest": {
+    "testEnvironment": "jest-environment-jsdom",
+    "verbose": true,
+    "preset": "ts-jest",
+    "rootDir": "src",
+    "testMatch": [
+      "<rootDir>/**/*.spec.tsx"
+    ],
+    "coverageDirectory": "../testCov/",
+    "coverageThreshold": {
+      "global": {
+        "line": 40
+      }
+    },
+    "collectCoverage": false,
+    "cleanMocks": true,
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.svg?$": "jest-transform-stub"
+    }
+  }
+}
