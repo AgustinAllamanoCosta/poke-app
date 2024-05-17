@@ -36,7 +36,7 @@ describe('AuthService', () => {
   it('Should save a pokeUser in the data base', async () => {
     const timeToBeSave: number = 1;
 
-    await service.validateUser(pokeEmail);
+    await service.validateUser(pokeEmail.email);
 
     expect(userRepo.save).toBeCalledTimes(timeToBeSave);
   });
@@ -46,7 +46,7 @@ describe('AuthService', () => {
     const timeToBeCreate: number = 1;
     const timeToBeFind: number = 1;
 
-    await service.registerUser(pokeEmail);
+    await service.registerUser(pokeEmail.email);
 
     expect(userRepo.findOneBy).toBeCalledTimes(timeToBeFind);
     expect(userRepo.save).toBeCalledTimes(timeToBeCreate);
