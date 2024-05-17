@@ -134,11 +134,12 @@ jobs:
           images: |
             ghcr.io/${{ github.repository }}
 
-      - name: Build and push Docker images to e2e test
+      - name: Build and push Docker images 
         uses: docker/build-push-action@v5.1.0
         with:
-          context: .
+          context: ./back
           push: true
+          file: ./back/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
