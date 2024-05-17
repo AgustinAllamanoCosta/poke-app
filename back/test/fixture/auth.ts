@@ -1,10 +1,10 @@
 import { PokeUser } from 'src/auth/entity/pokeUser.entity';
 
-export const pokeUserFactory = (
-  email: string = 'ash.ketchum@gmail.com',
-): PokeUser => {
+export const pokeEmail: string = 'ash.ketchum@gmail.com';
+
+export const pokeUserFactory = (email: string = pokeEmail): PokeUser => {
   return {
     email: email,
-    lastConnection: new Date()
+    lastConnection: new Date(),
   };
 };

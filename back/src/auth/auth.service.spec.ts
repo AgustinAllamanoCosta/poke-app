@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
 import { Repository } from 'typeorm';
 import { PokeUser } from './entity/pokeUser.entity';
-import { pokeUserFactory } from '../../test/fixture/auth';
+import { pokeEmail, pokeUserFactory } from '../../test/fixture/auth';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -33,12 +33,22 @@ describe('AuthService', () => {
     expect(service).toBeDefined();
   });
 
-  it('Shoudl save a pokeUser in the data base', async () => {
-    const someUserEmail: string = 'ash.ketchum@gamil.com';
+  it('Should save a pokeUser in the data base', async () => {
     const timeToBeSave: number = 1;
 
-    await service.validateUser(someUserEmail);
+    await service.validateUser(pokeEmail);
 
     expect(userRepo.save).toBeCalledTimes(timeToBeSave);
+  });
+
+  it('Should register a new user in the database', async () => {
+    userRepo.findOneBy = jest.fn().mockResolvedValue(null);
+    const timeToBeCreate: number = 1;
+    const timeToBeFind: number = 1;
+
+    await service.registerUser(pokeEmail);
+
+    expect(userRepo.findOneBy).toBeCalledTimes(timeToBeFind);
+    expect(userRepo.save).toBeCalledTimes(timeToBeCreate);
   });
 });

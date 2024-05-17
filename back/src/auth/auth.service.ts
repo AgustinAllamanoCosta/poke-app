@@ -4,6 +4,8 @@ import { OAuth2Client, TokenPayload } from 'google-auth-library';
 import { Repository } from 'typeorm';
 import { PokeUser } from './entity/pokeUser.entity';
 import { ConfigService } from '@nestjs/config';
+import { pokeUserFactory } from '../../test/fixture/auth';
+import { RegisterResponse } from 'src/types/auth';
 
 @Injectable()
 export class AuthService {
@@ -39,5 +41,18 @@ export class AuthService {
 
     pokeUser.lastConnection = new Date();
     await this.userRepository.save(pokeUser);
+  }
+
+  public async registerUser(email: string): Promise<RegisterResponse> {
+    const pokeUser: PokeUser | null = await this.userRepository.findOneBy({
+      email,
+    });
+
+    if (pokeUser) {
+      return { wasUserCreated: false };
+    }
+    const newUser: PokeUser = pokeUserFactory(email);
+    this.userRepository.save(newUser);
+    return { wasUserCreated: true }
   }
 }

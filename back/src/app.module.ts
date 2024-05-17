@@ -2,12 +2,12 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { BasicConfig, basicConfigFactory } from './config/configuration';
+import { basicConfigFactory } from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { join } from 'path';
-import { AuthService } from './auth/auth.service';
 import { AuthMiddleware } from './auth/guards/auth.guard';
-import { PokeUser } from './auth/entity/pokeUser.entity';
+import { databaseConfig } from '../data.source';
+import { DataSourceOptions } from 'typeorm';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,22 +15,11 @@ import { PokeUser } from './auth/entity/pokeUser.entity';
       isGlobal: true,
       load: [basicConfigFactory],
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: BasicConfig.database_host,
-      port: BasicConfig.database_port,
-      username: BasicConfig.database_username,
-      password: BasicConfig.database_password,
-      database: BasicConfig.database_name,
-      entities: [join(__dirname, '**', '*.entity.{ts,js}')],
-      migrations: [join(__dirname, '**', '/migrations/*.ts')],
-      migrationsTableName: 'executed_migrations',
-      synchronize: false,
-    }),
-    TypeOrmModule.forFeature([PokeUser]),
+    TypeOrmModule.forRoot(databaseConfig as DataSourceOptions),
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AuthService, AppService],
+  providers: [AppService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
