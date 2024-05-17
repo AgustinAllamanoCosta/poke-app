@@ -53,6 +53,6 @@ export class AuthService {
     }
     const newUser: PokeUser = pokeUserFactory(email);
     this.userRepository.save(newUser);
-    return { wasUserCreated: true }
+    return { wasUserCreated: true };
   }
 }
