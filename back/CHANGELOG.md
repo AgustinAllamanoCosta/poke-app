@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.9 (2024-05-17)
+
+
+### Bug Fixes
+
+* 🐛 dist path in docker image ([1767e71](https://github.com/AgustinAllamanoCosta/poke-app/commit/1767e71e92cd4ce7b5f4afd30debbabfd156e300))
+
 ### 0.0.8 (2024-05-17)
 
 ### 0.0.7 (2024-05-17)
