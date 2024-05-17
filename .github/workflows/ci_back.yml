@@ -109,9 +109,9 @@ jobs:
           node-version: 21.x
 
       - name: Build with envs
-        env:
-          DOTENV_KEY: ${{ secrets.DOTENV_KEY_PROD }}
-        run: yarn build
+        run: | 
+          yarn vault-pull production .env --dotenvMe='${{ secrets.DOTENV_ME }}' --yes
+          yarn build
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
@@ -119,6 +119,28 @@ jobs:
           name: production-build
           path: |
             ./back/dist
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5.5.0
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+
+      - name: Build and push Docker images to e2e test
+        uses: docker/build-push-action@v5.1.0
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
   version:
     runs-on: ubuntu-latest
@@ -142,7 +164,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            **/CHANGELOG.md
+            ./back/CHANGELOG.md
           key: ${{ runner.os }}-changelog-${{ hashFiles('**/CHANGELOG.md') }}
 
       - name: Install Latest Node
@@ -165,3 +187,16 @@ jobs:
           git commit --allow-empty -m "[skip ci]"
           git push --follow-tags origin main
 
+  deployment:
+    runs-on: ubuntu-latest
+
+    needs: version
+
+    steps:
+    - name: Deploy with docker commands
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        command: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u allamanocostaagustin@gmail.com --password-stdin && docker pull ghcr.io/agustinallamanocosta/poke:master &&  docker container run --name poke_back -d -p 8080:3000 ghcr.io/agustinallamanocosta/poke:master 
+        host: ${{ secrets.REMOTE_ADDRESS }}
+        username: agustinac
+        privateKey: ${{ secrets.GCLOUD_KEY}}
