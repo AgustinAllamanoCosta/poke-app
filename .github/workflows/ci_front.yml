@@ -1,4 +1,4 @@
-name: Continues_Integration_Back
+name: Continues_Integration_Front
 
 on:
   workflow_dispatch:
@@ -9,14 +9,9 @@ on:
         default: "test"
   push:
     paths:
-      - back/**
+      - front/**
     branches:
       - "main"
-
-defaults:
-  run:
-    shell: bash
-    working-directory: ./back
 
 jobs:
   install-dep:
@@ -31,14 +26,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-           ./back/node_modules
+            ./front/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies with Node.js 21.x
         uses: actions/setup-node@v4
         with:
           node-version: 21.x
-      - run: pwd && yarn
+      - run: yarn
 
   lint:
     runs-on: ubuntu-latest
@@ -54,7 +49,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ./back/node_modules
+            ./front/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run Lint with Node.js 21.x
@@ -63,7 +58,7 @@ jobs:
           node-version: 21.x
       - run: yarn lint
 
-  test:
+build:
     runs-on: ubuntu-latest
 
     needs: lint
@@ -77,30 +72,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ./back/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Run Test with Node.js 21.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 21.x
-      - run: yarn test
-
-  build:
-    runs-on: ubuntu-latest
-
-    needs: test
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Cache dependencies
-        id: cache-dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./back/node_modules
+            ./front/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Use Node.js 21.x
@@ -109,16 +81,16 @@ jobs:
           node-version: 21.x
 
       - name: Build with envs
-        run: |
-          yarn vault:pull production .env --dotenvMe='${{ secrets.DOTENV_ME }}' --yes
-          yarn build
+        env:
+          DOTENV_KEY: ${{ secrets.DOTENV_KEY_PROD }}
+        run: yarn build
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
         with:
           name: production-build
           path: |
-            ./back/dist
+            ./front/dist
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -134,15 +106,6 @@ jobs:
           images: |
             ghcr.io/${{ github.repository }}
 
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v5.1.0
-        with:
-          context: ./back
-          push: true
-          file: ./back/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
   version:
     runs-on: ubuntu-latest
 
@@ -157,16 +120,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ./back/node_modules
+            ./front/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Cache changelog
-        id: cache-changelog
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./back/CHANGELOG.md
-          key: ${{ runner.os }}-changelog-${{ hashFiles('**/CHANGELOG.md') }}
 
       - name: Install Latest Node
         uses: actions/setup-node@v4
@@ -186,18 +141,47 @@ jobs:
         run: |
           git pull
           git commit --allow-empty -m "[skip ci]"
-          git push --follow-tags origin main
+          git push --follow-tags origin master
 
-  deployment:
+  deploy_on_firebase:
     runs-on: ubuntu-latest
 
-    needs: version
+    needs: end_to_end_testing
 
     steps:
-    - name: Deploy with docker commands
-      uses: garygrossgarten/github-action-ssh@release
-      with:
-        command: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u allamanocostaagustin@gmail.com --password-stdin && docker stop poke_back && docker rm poke_back && docker pull ghcr.io/agustinallamanocosta/poke-app:main &&  docker container run --name poke_back -d -p 8080:3000 ghcr.io/agustinallamanocosta/poke-app:main
-        host: ${{ secrets.REMOTE_ADDRESS }}
-        username: agustinallamanocosta
-        privateKey: ${{ secrets.GCLOUD_KEY}}
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./front/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Latest Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+
+      - name: Download production artifact
+        uses: actions/download-artifact@v4.1.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          name: production-build
+          path: ./front/dist
+
+      - name: Configure Envoironment
+        shell: bash
+        run: |
+          yarn vault:pull production .env --dotenvMe='${{ secrets.DOTENV_ME }}' --yes
+          mv .env ./front/dist
+
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0.7.1
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GETTHINGSDONE_391622 }}'
+          projectId: poke-app-f14fd
+          channelId: live
