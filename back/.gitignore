@@ -59,3 +59,8 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 .flaskenv*
 !.env.project
 !.env.vault
+
+**/terraform/*.json
+**/terraform/*.sh
+.terraform
+.terraform.*
