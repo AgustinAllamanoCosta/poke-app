@@ -6,7 +6,7 @@ on:
       input:
         description: "Test"
         required: false
-        default: "World"
+        default: "test"
   push:
     paths:
       - back/**
