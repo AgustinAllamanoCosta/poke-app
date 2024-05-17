@@ -110,7 +110,7 @@ jobs:
 
       - name: Build with envs
         run: | 
-          yarn vault-pull production .env --dotenvMe='${{ secrets.DOTENV_ME }}' --yes
+          yarn vault:pull production .env --dotenvMe='${{ secrets.DOTENV_ME }}' --yes
           yarn build
 
       - name: Archive production artifacts
