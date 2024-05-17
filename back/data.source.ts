@@ -1,5 +1,6 @@
 import { join } from "path";
 import { BasicConfig } from "./src/config/configuration";
+import { DataSourceOptions } from "typeorm";
 
 export const databaseConfig = {
       type: 'postgres',
@@ -8,8 +9,9 @@ export const databaseConfig = {
       username: BasicConfig.database_username,
       password: BasicConfig.database_password,
       database: BasicConfig.database_name,
-      entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+      entities: [join(__dirname, '**', '**/entity/*.entity.{ts,js}')],
       migrations: [join(__dirname, '**', '/migrations/*.ts')],
       migrationsTableName: 'executed_migrations',
       synchronize: false,
-};
+      migrationsRun: false,
+} as DataSourceOptions;
