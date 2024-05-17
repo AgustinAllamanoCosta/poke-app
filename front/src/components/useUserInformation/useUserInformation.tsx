@@ -2,12 +2,7 @@ import { useState, ReactNode, useMemo } from 'react';
 import { UserInformationContext } from '../../contexts/userContext';
 import { UserData } from '../../types/types';
 
-const UserContext = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
-
+const UserContext = ({ children }: { children: ReactNode }) => {
   const [userData, setUserData] = useState<UserData>();
 
   const saveUserDataInApp = (userData: UserData | undefined) => {

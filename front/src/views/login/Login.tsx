@@ -12,19 +12,19 @@ const LoginView = () => {
   return (
     <Container>
       <LoginCardContainer>
-          <Title
-            href={REPO_URL}
-            target={'_blank'}
-            data-cy="Login-Title"
-          >
-            Pokemo Battle Cards
-          </Title>
-          <ButtonContent>
-            <Button
-              text="Login With Google"
-              onClick={loginGoogle}
-            />
-          </ButtonContent>
+        <Title
+          href={REPO_URL}
+          target={'_blank'}
+          data-cy="Login-Title"
+        >
+          Pokemo Battle Cards
+        </Title>
+        <ButtonContent>
+          <Button
+            text="Login With Google"
+            onClick={loginGoogle}
+          />
+        </ButtonContent>
       </LoginCardContainer>
     </Container>
   );

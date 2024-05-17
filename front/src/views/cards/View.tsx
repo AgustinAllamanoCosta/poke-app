@@ -17,10 +17,7 @@ const CardsView = () => {
     navigate(INDEX);
   }, [userInformation.userData]);
 
-  return (
-    <Container>
-    </Container>
-  );
+  return <Container></Container>;
 };
 
 const Container = styled.div`

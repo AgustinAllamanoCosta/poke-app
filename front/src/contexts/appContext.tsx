@@ -13,14 +13,14 @@ type AppContextProps = {
 const AppContext = ({ children }: AppContextProps) => {
   return (
     <AppContainer>
-        <GlobalStyles />
-        <ErrorContext>
-          <UserContext>
-              <GoogleAuthContext clientId={configuration.clientId}>
-                {children}
-              </GoogleAuthContext>
-          </UserContext>
-        </ErrorContext>
+      <GlobalStyles />
+      <ErrorContext>
+        <UserContext>
+          <GoogleAuthContext clientId={configuration.clientId}>
+            {children}
+          </GoogleAuthContext>
+        </UserContext>
+      </ErrorContext>
     </AppContainer>
   );
 };

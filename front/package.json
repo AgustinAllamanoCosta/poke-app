@@ -9,7 +9,7 @@
     "preview": "node -r dotenv/config ./node_modules/.bin/vite preview ",
     "test": "NODE_ENV=test jest --passWithNoTests",
     "lint:format": "prettier . --write --single-quote --single-attribute-per-line",
-    "lint:check": "prettier . --check --single-quote --single-attribute-per-line",
+    "lint": "prettier . --check --single-quote --single-attribute-per-line",
     "release": "standard-version",
     "vault:add": "npx dotenv-vault new",
     "vault:login": "npx dotenv-vault@latest login",
