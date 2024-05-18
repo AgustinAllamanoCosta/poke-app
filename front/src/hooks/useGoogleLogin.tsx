@@ -21,8 +21,16 @@ export const useGoogleLoginActions = (redirectPath: string) => {
             },
           },
         );
+        const backResponse = await axios.post('http://localhost:3000/register', { email: 'agustinallamanocosta@gmail.com' },
+          {
+            headers: {
+              Authorization: `Bearer ${codeResponse.access_token}`,
+              Accept: 'application/json',
+            },
+          },
+        );
         const newUser: UserData = {
-          id: googleResponse.data.id,
+          id: backResponse.data.id,
           name: googleResponse.data.name,
           photoURL: googleResponse.data.picture,
           accessToken: codeResponse.access_token,

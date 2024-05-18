@@ -17,11 +17,13 @@
     "vault:build": "npx dotenv-vault@latest build",
     "vault:keys": "npx dotenv-vault keys",
     "vault:pull": "npx dotenv-vault@latest pull",
-    "vault:push": "npx dotenv-vault@latest push"
+    "vault:push": "npx dotenv-vault@latest push",
+    "docker:build": "docker build -t ghcr.io/agustinallamanocosta/poke-app:front ."
   },
   "dependencies": {
     "@react-oauth/google": "^0.11.0",
     "@types/firebase": "^3.2.1",
+    "@types/react-grid-layout": "^1.3.5",
     "@vitejs/plugin-react": "^3.1.0",
     "axios": "^1.4.0",
     "dotenv": "^16.4.1",
@@ -29,6 +31,7 @@
     "firebase": "^10.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-grid-layout": "^1.4.4",
     "react-router": "^6.21.1",
     "react-router-dom": "^6.21.1",
     "styled-components": "^6.0.0-rc.3",
