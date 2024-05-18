@@ -103,3 +103,12 @@ jobs:
         with:
           images: |
             ghcr.io/${{ github.repository }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v5.1.0
+        with:
+          context: ./front
+          push: true
+          file: ./front/Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: front

@@ -141,7 +141,7 @@ jobs:
           push: true
           file: ./back/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          labels: back
 
   deployment:
     runs-on: ubuntu-latest
@@ -152,7 +152,7 @@ jobs:
     - name: Deploy with docker commands
       uses: garygrossgarten/github-action-ssh@release
       with:
-        command: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u allamanocostaagustin@gmail.com --password-stdin && docker stop poke_back && docker rm poke_back && docker pull ghcr.io/agustinallamanocosta/poke-app:main &&  docker container run --name poke_back -d -p 8080:3000 ghcr.io/agustinallamanocosta/poke-app:main
+        command: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u allamanocostaagustin@gmail.com --password-stdin && docker stop poke_back && docker rm poke_back && docker pull ghcr.io/agustinallamanocosta/poke-app:back &&  docker container run --name poke_back -d -p 8080:3000 ghcr.io/agustinallamanocosta/poke-app:back
         host: ${{ secrets.REMOTE_ADDRESS }}
         username: agustinallamanocosta
         privateKey: ${{ secrets.GCLOUD_KEY}}
