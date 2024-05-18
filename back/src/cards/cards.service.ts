@@ -15,9 +15,12 @@ export class CardsService {
   ) {}
 
   public async createNewCard(createCardDTO: CreateCardsDTO): Promise<void> {
+    console.group('creation new card');
     const user: PokeUser | null = await this.usersRepository.findOneBy({
       id: createCardDTO.userId,
     });
+
+    console.debug('user found ', user);
 
     if (user === null) {
       throw new Error('User not found');
@@ -28,6 +31,7 @@ export class CardsService {
       pokemonType: createCardDTO.pokemonType,
       cardtype: createCardDTO.cardtype,
     });
+    console.debug('card in base', cardInBase);
 
     if (cardInBase) {
       return;
@@ -40,16 +44,24 @@ export class CardsService {
       newCard.hp = createCardDTO.hp;
       newCard.attack = createCardDTO.attack;
       newCard.expansion = createCardDTO.expansion;
+      console.debug('new card', newCard);
 
-      user.cards.push(newCard);
+      if(user.cards){
+        user.cards.push(newCard);
+      }else{
+        user.cards = [newCard];
+      }
 
+      console.debug('user with new card', user);
       await this.usersRepository.save(user);
       await this.cardsRepository.save(newCard);
+      console.groupEnd();
     }
   }
 
   public async getAllCardsByUserId(id: string): Promise<Array<PokeCard>> {
-    const user: PokeUser | null = await this.usersRepository.findOneBy({ id });
+    const user: PokeUser | null = await this.usersRepository.findOne({ where: { id }, relations: ['cards']});
+    console.debug('cards in user id ', id, user.cards);
     if (user) {
       return user.cards;
     } else {

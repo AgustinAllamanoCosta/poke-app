@@ -49,10 +49,10 @@ export class AuthService {
     });
 
     if (pokeUser) {
-      return { wasUserCreated: false };
+      return { wasUserCreated: false, id: pokeUser.id };
     }
     const newUser: PokeUser = pokeUserFactory(email);
     this.userRepository.save(newUser);
-    return { wasUserCreated: true };
+    return { wasUserCreated: true, id: newUser.id };
   }
 }

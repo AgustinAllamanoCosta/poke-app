@@ -25,6 +25,7 @@ export class CardsController {
         'an error ocurred when some one try to create a card or updated',
       );
       console.error(error.message);
+      console.error(error);
     }
   }
 

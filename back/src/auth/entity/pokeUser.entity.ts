@@ -20,7 +20,7 @@ export class PokeUser {
   @Column({ nullable: true })
   lastConnection: Date;
 
-  @ManyToMany(() => PokeCard, (card) => card.pokeUser)
+  @ManyToMany(() => PokeCard, pokeCard => pokeCard.pokeUser)
   @JoinTable()
   cards: PokeCard[];
 }

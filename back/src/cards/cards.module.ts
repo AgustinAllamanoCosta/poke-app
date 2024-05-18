@@ -2,13 +2,12 @@ import { Module } from '@nestjs/common';
 import { CardsController } from './cards.controller';
 import { CardsService } from './cards.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PokeUser } from '../auth/entity/pokeUser.entity';
 import { PokeCard } from './entity/Card.Entity';
+import { PokeUser } from '../auth/entity/pokeUser.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PokeUser]),
-    TypeOrmModule.forFeature([PokeCard]),
+    TypeOrmModule.forFeature([PokeCard, PokeUser]),
   ],
   controllers: [CardsController],
   providers: [CardsService],
