@@ -4,10 +4,12 @@ import { useCallback, useContext, useEffect } from 'react';
 import { UserData } from '../types/types';
 import { useNavigate } from 'react-router-dom';
 import { UserInformationContext } from '../contexts/userContext';
+import { useAPI } from './useApi';
 
 export const useGoogleLoginActions = (redirectPath: string) => {
   const userInformation = useContext(UserInformationContext);
   const navigate = useNavigate();
+  const { registerUser } = useAPI();
 
   const loginGoogle = useCallback(
     useGoogleLogin({
@@ -21,14 +23,7 @@ export const useGoogleLoginActions = (redirectPath: string) => {
             },
           },
         );
-        const backResponse = await axios.post('http://localhost:3000/register', { email: 'agustinallamanocosta@gmail.com' },
-          {
-            headers: {
-              Authorization: `Bearer ${codeResponse.access_token}`,
-              Accept: 'application/json',
-            },
-          },
-        );
+        const backResponse = await registerUser(codeResponse.access_token);
         const newUser: UserData = {
           id: backResponse.data.id,
           name: googleResponse.data.name,
