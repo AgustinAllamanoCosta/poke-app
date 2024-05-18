@@ -30,10 +30,7 @@ export class CardsService {
     });
 
     if (cardInBase) {
-
-      cardInBase.pokeUser.push(user);
-      await this.cardsRepository.save(cardInBase);
-
+      return;
     } else {
       const newCard: PokeCard = new PokeCard();
       newCard.pokeUser = [user];
@@ -45,9 +42,61 @@ export class CardsService {
       newCard.expansion = createCardDTO.expansion;
 
       user.cards.push(newCard);
-    
+
       await this.usersRepository.save(user);
       await this.cardsRepository.save(newCard);
     }
+  }
+
+  public async getAllCardsByUserId(id: string): Promise<Array<PokeCard>> {
+    const user: PokeUser | null = await this.usersRepository.findOneBy({ id });
+    if (user) {
+      return user.cards;
+    } else {
+      return [];
+    }
+  }
+
+  public async getCardById(id: string): Promise<PokeCard | null> {
+    return await this.cardsRepository.findOneBy({ id });
+  }
+
+  public async removeCard(id: string): Promise<void> {
+    const cardToRemove: PokeCard | null = await this.cardsRepository.findOneBy({
+      id,
+    });
+    if (cardToRemove) {
+      this.cardsRepository.remove(cardToRemove);
+    }
+  }
+
+  public async removeCardFromUser(
+    userId: string,
+    cardId: string,
+  ): Promise<void> {
+    const card: PokeCard | null = await this.cardsRepository.findOneBy({
+      id: cardId,
+    });
+
+    if (!card) {
+      return;
+    }
+
+    const user: PokeUser | null = await this.usersRepository.findOneBy({
+      id: userId,
+    });
+    if (!user) {
+      return;
+    }
+
+    card.pokeUser = card.pokeUser.filter((u) => u.id !== userId);
+
+    await this.cardsRepository.save(card);
+  }
+
+  public async updateCard(id: string, attrs: Partial<PokeCard>): Promise<void> {
+    const card: PokeCard | null = await this.cardsRepository.findOneBy({ id });
+    Object.assign(card, attrs);
+    await this.cardsRepository.save(card);
   }
 }

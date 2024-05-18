@@ -20,13 +20,15 @@ describe('CardsService', () => {
         if (token === 'PokeCardRepository') {
           return {
             save: jest.fn(),
-            findOneBy: jest.fn().mockImplementation(()=> { return null;}),
+            findOneBy: jest.fn().mockImplementation(() => {
+              return null;
+            }),
           };
         }
         if (token === 'PokeUserRepository') {
           return {
             findOneBy: jest.fn(),
-            save: jest.fn()
+            save: jest.fn(),
           };
         }
       })
