@@ -8,6 +8,7 @@ import { AuthMiddleware } from './auth/guards/auth.guard';
 import { databaseConfig } from '../data.source';
 import { DataSourceOptions } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
+import { CardsModule } from './cards/cards.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     TypeOrmModule.forRoot(databaseConfig as DataSourceOptions),
     AuthModule,
+    CardsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
