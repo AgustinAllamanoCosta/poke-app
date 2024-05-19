@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PokeCard } from '../cards/entity/Card.Entity';
 import { BattleResult } from 'src/types/Battle';
+import { POKEMON_TYPE } from 'src/types/cards';
 
 @Injectable()
 export class BattleService {
@@ -13,10 +14,9 @@ export class BattleService {
     };
     let finalDamage: number = challengesPokemon.attack;
 
-    if(rivalPokemon.weakness.type === challengesPokemon.pokemonType){
+    if( rivalPokemon.weakness && rivalPokemon.weakness.type === challengesPokemon.pokemonType){
       finalDamage = finalDamage * rivalPokemon.weakness.multiplier;
-
-    }else if (rivalPokemon.resistance.type === challengesPokemon.pokemonType){
+    }else if ( rivalPokemon.resistance && rivalPokemon.resistance.type === challengesPokemon.pokemonType){
       if( finalDamage > rivalPokemon.resistance.points){
         finalDamage = finalDamage - rivalPokemon.resistance.points;
       }else{
@@ -30,5 +30,9 @@ export class BattleService {
     return battleResult;
 
   };
+
+  private getRivalWeaknessType(rival:PokeCard): string {
+    return rival.weakness.type ? rival.weakness.type : '';
+  }
 
 }

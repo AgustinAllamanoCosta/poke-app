@@ -12,8 +12,11 @@ export class BattleController {
   @Get('/:id')
   public async getBattlerResult(@Param('id') challengesPokemonId: string ,@Query('rival') rivalPokemonName: string) {
     try {
+      console.group('Battle');
       const challengesPokemon: PokeCard | null = await this.cardService.getCardById(challengesPokemonId);
       const rivalPokemon: PokeCard | null = await this.cardService.getCardByName(rivalPokemonName);
+      console.debug('challenger ', challengesPokemon);
+      console.debug('rival', rivalPokemon);
       let response: BattleResult;
       if(challengesPokemon && rivalPokemon){
         response = await this.battleService.fight(challengesPokemon,rivalPokemon);
@@ -24,6 +27,7 @@ export class BattleController {
           challengerDefeatRival: false
         };
       }
+      console.groupEnd();
       return response;
     } catch (error: any) {
       console.error(
