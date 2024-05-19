@@ -1,29 +1,26 @@
 import styled from 'styled-components';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserInformationContext } from '../../contexts/userContext';
-import { ErrorHandlerContext } from '../../contexts/errorHandlerContext';
 import { useNavigate } from 'react-router-dom';
 import { BATTLE } from '../../constants/routePaths';
 import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import PokemonCard from '../../components/card/Card';
 import { useAPI } from '../../hooks/useApi';
-
-export type PokeCard = {
-  id: string;
-  name: string;
-  hp: number;
-  type: string;
-  cardType: string;
-  expansion: string;
-  attack: number;
-};
+import { NavBar } from '../../components/bar/Bar';
+import { PokeCard } from '../../types/types';
 
 type CardsViewProp = {
-  selectPokemon: (pokemon:PokeCard)=>void;
+  selectPokemon: (pokemon: PokeCard) => void;
 };
 
-const CardsView = ({ selectPokemon }:CardsViewProp) => {
-  const errorContext = useContext(ErrorHandlerContext);
+const CardsView = ({ selectPokemon }: CardsViewProp) => {
+  const [typeFilter, setTypeFilter] = useState<string | undefined>(undefined);
+  const [nameFilter, setNameFilter] = useState<string | undefined>(undefined);
+  const [expansionFilter, setExpansionFilter] = useState<string | undefined>(
+    undefined,
+  );
+  const [displayCards, setDisplayCards] = useState<PokeCard[]>([]);
+
   const userInformation = useContext(UserInformationContext);
   const navigate = useNavigate();
   const { getUserCards } = useAPI();
@@ -31,6 +28,7 @@ const CardsView = ({ selectPokemon }:CardsViewProp) => {
   const loadCard = async () => {
     const cards = await getUserCards();
     userInformation.setCards(cards);
+    setDisplayCards(cards);
   };
 
   useEffect(() => {
@@ -66,31 +64,45 @@ const CardsView = ({ selectPokemon }:CardsViewProp) => {
   };
 
   return (
-    <Container>
-      <TitleBar>
-        <SearchInput placeholder="Search by Name" />
-        <SearchInput placeholder="Search by Expansion" />
-        <SearchInput placeholder="Search by Type" />
-      </TitleBar>
-      <CardGrid
-        layouts={layouts}
-        breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-        cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-      >
-        {userInformation.cards.map((cardData: PokeCard, index) => {
-          return (
-            <PokemonCard
-              key={`poke-card-${index + 1}`}
-              cardData={cardData}
-              onClick={()=>{
-                selectPokemon(cardData);
-                navigate(BATTLE)
-                }}
-            />
-          );
-        })}
-      </CardGrid>
-    </Container>
+    <>
+      <NavBar />
+      <Container>
+        <TitleBar>
+          <SearchInput placeholder="Search by Name" />
+          <SearchInput placeholder="Search by Expansion" />
+          <select
+            onChange={(data) => {
+              setTypeFilter(data.target.value);
+            }}
+          >
+            <option value="">Select...</option>
+            {displayCards.map((card: PokeCard) => {
+              return <option value={card.type}>{card.type}</option>;
+            })}
+          </select>
+        </TitleBar>
+        {displayCards && (
+          <CardGrid
+            layouts={layouts}
+            breakpoints={{ lg: 1200, md: 1200, sm: 1200, xs: 1200, xxs: 0 }}
+            cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+          >
+            {displayCards.map((cardData: PokeCard, index) => {
+              return (
+                <PokemonCard
+                  key={`poke-card-${index + 1}`}
+                  cardData={cardData}
+                  onClick={() => {
+                    selectPokemon(cardData);
+                    navigate(BATTLE);
+                  }}
+                />
+              );
+            })}
+          </CardGrid>
+        )}
+      </Container>
+    </>
   );
 };
 

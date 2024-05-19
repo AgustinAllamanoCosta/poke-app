@@ -1,20 +1,24 @@
 import { styled } from 'styled-components';
 import { THEME_ONE } from '../../constants/colors';
 import { FONTS } from '../../constants/size';
-import { PokeCard } from '../../views/cards/View';
+import { PokeCard } from '../../types/types';
 
-type PokemonCradProps ={ cardData: PokeCard, onClick?: ()=>void };
+type PokemonCradProps = { cardData: PokeCard; onClick?: () => void };
 
-const PokemonCard = ( { cardData, onClick }: PokemonCradProps ): React.JSX.Element => {
+const PokemonCard = ({
+  cardData,
+  onClick,
+}: PokemonCradProps): React.JSX.Element => {
   return (
-    <Container onClick={onClick ? onClick : ()=>{}}>
+    <Container onClick={onClick ? onClick : () => {}}>
       <Header>
         <Name>{cardData.name}</Name>
         <div>
-          <span>HP: </span><Name>{cardData.hp}</Name>
+          <span>HP: </span>
+          <Name>{cardData.hp}</Name>
         </div>
       </Header>
-      <Image/>
+      <Image />
       <Footer>
         <FooterText> Type: {cardData.type}</FooterText>
         <FooterText>Expansion: {cardData.expansion}</FooterText>
@@ -38,11 +42,11 @@ const Header = styled.div`
 `;
 
 const Image = styled.img`
-    border: solid;
-    border-color: black;
-    width: 250px;
-    height: 200px;
-    margin-bottom: 25px;
+  border: solid;
+  border-color: black;
+  width: 250px;
+  height: 200px;
+  margin-bottom: 25px;
 `;
 
 const Footer = styled.div`

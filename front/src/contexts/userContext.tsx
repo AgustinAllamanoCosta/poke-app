@@ -1,15 +1,14 @@
 import { createContext } from 'react';
-import { UserData } from '../types/types';
-import { PokeCard } from '../views/cards/View';
+import { PokeCard, UserData } from '../types/types';
 
 export const UserInformationContext = createContext<{
   userData: UserData | undefined;
-  cards: PokeCard[]
+  cards: PokeCard[];
   setUserData: (e: UserData | undefined) => void;
-  setCards: (e: PokeCard[])=> void;
+  setCards: (e: PokeCard[]) => void;
 }>({
   userData: undefined,
   cards: [],
   setUserData: (e: UserData | undefined) => {},
-  setCards: (e: PokeCard[] ) => {}
+  setCards: (e: PokeCard[]) => {},
 });

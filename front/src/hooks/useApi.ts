@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { configuration } from '../config/appConfig';
 import { UserInformationContext } from '../contexts/userContext';
-import { NewCard } from '../views/cards/Add';
+import { NewCard } from '../types/types';
 
 export const useAPI = () => {
   const userInformation = useContext(UserInformationContext);
@@ -46,7 +46,7 @@ export const useAPI = () => {
     return backResponse.data;
   };
 
-  const addNewCard = async (newCard: NewCard ) => {
+  const addNewCard = async (newCard: NewCard) => {
     console.group('Add new Card');
     console.debug('Card to add ', newCard);
     const backResponse = await axios.post(
@@ -74,7 +74,7 @@ export const useAPI = () => {
           Authorization: `Bearer ${userInformation.userData?.accessToken}`,
           Accept: 'application/json',
         },
-        params: { rival: rivalName }
+        params: { rival: rivalName },
       },
     );
     console.debug('battle result ', backResponse.data);

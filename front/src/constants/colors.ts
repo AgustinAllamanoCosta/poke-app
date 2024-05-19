@@ -5,5 +5,5 @@ export const THEME_ONE = {
   boder: '#1B1A55',
   fontColor: '#FFFF',
   barBackground: '#645AA3',
-  cardBackground: '#645AA3'
+  cardBackground: '#645AA3',
 };

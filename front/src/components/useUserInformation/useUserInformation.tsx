@@ -1,34 +1,31 @@
 import { useState, ReactNode, useMemo, useEffect } from 'react';
 import { UserInformationContext } from '../../contexts/userContext';
-import { UserData } from '../../types/types';
-import { PokeCard } from '../../views/cards/View';
+import { PokeCard, UserData } from '../../types/types';
 
 const UserContext = ({ children }: { children: ReactNode }) => {
-  const [userData, setUserData] = useState<UserData>();
-  const [cards, setCards ] = useState<PokeCard[]>([]);
+  const [userData, setUserData] = useState<UserData | undefined>();
+  const [cards, setCards] = useState<PokeCard[]>([]);
   const key: string = 'poke-app';
 
   const saveUserDataInApp = (userData: UserData | undefined) => {
+    console.log('save user data', userData);
     localStorage.setItem(key, JSON.stringify(userData));
     setUserData(userData);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const rawLocalData: string | null = localStorage.getItem(key);
-    if(rawLocalData){
+    if (rawLocalData) {
       saveUserDataInApp(JSON.parse(rawLocalData));
     }
-  },[]);
+  }, []);
 
-  const userInformationContextValue = useMemo(
-    () => ({
-      userData,
-      cards,
-      setUserData: saveUserDataInApp,
-      setCards: setCards
-    }),
-    [userData, cards],
-  );
+  const userInformationContextValue = {
+    userData,
+    cards,
+    setUserData: saveUserDataInApp,
+    setCards: setCards,
+  };
 
   return (
     <UserInformationContext.Provider value={userInformationContextValue}>
