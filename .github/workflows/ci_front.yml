@@ -153,7 +153,7 @@ jobs:
       - name: Configure Envoironment
         shell: bash
         run: |
-          yarn vault-pull production .env --dotenvMe='${{ secrets.DOTENV_ME }}' --yes
+          yarn vault:pull production .env --dotenvMe='${{ secrets.DOTENV_ME_FRONT }}' --yes
           mv .env ./front/dist
 
       - name: Deploy to Firebase
