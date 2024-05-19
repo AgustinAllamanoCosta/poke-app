@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { UserInformationContext } from '../../contexts/userContext';
 import { useNavigate } from 'react-router-dom';
 import { BATTLE } from '../../constants/routePaths';
-import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
+import GridLayout from "react-grid-layout";
 import PokemonCard from '../../components/card/Card';
 import { useAPI } from '../../hooks/useApi';
 import { NavBar } from '../../components/bar/Bar';
@@ -14,16 +14,20 @@ type CardsViewProp = {
 };
 
 const CardsView = ({ selectPokemon }: CardsViewProp) => {
+  const userInformation = useContext(UserInformationContext);
+  const navigate = useNavigate();
+  const { getUserCards } = useAPI();
+
   const [typeFilter, setTypeFilter] = useState<string | undefined>(undefined);
   const [nameFilter, setNameFilter] = useState<string | undefined>(undefined);
   const [expansionFilter, setExpansionFilter] = useState<string | undefined>(
     undefined,
   );
   const [displayCards, setDisplayCards] = useState<PokeCard[]>([]);
+  const [layout, setLayout] = useState<GridLayout.Layout[]>([]);
 
-  const userInformation = useContext(UserInformationContext);
-  const navigate = useNavigate();
-  const { getUserCards } = useAPI();
+  const pokeCardIdTemplate: string = 'poke-card-';
+  const cardPerRow: number = 3;
 
   const loadCard = async () => {
     const cards = await getUserCards();
@@ -31,43 +35,49 @@ const CardsView = ({ selectPokemon }: CardsViewProp) => {
     setDisplayCards(cards);
   };
 
+  const generateLayout = ()=>{
+    const layout: Array<GridLayout.Layout> = [];
+    let initX: number = 0;
+    let initY: number = 0;
+
+    const cardWidth: number = 1;
+    const cardHeight: number = 1;
+
+    displayCards.forEach((pokeCard: PokeCard, index: number)=>{
+      const newLayoutConf: GridLayout.Layout = {
+        i: `${pokeCardIdTemplate}${index}`,
+        x: initX,
+        y: initY,
+        w: cardWidth,
+        h: cardHeight,
+      };
+      layout.push(newLayoutConf);
+      if( initX === 0 || initX/cardWidth < cardPerRow){
+          initX+= cardWidth;
+      }else{
+        initX=0;
+        initY+= cardHeight;
+      }
+    });
+    console.debug('new layout', layout);
+    return layout;
+  };
+
+
   useEffect(() => {
     loadCard();
   }, []);
 
-  const layouts = {
-    lg: [
-      { i: 'poke-card-1', x: 0, y: 0, w: 1, h: 10 },
-      { i: 'poke-card-2', x: 1, y: 0, w: 1, h: 10 },
-      { i: 'poke-card-3', x: 2, y: 0, w: 1, h: 10 },
-    ],
-    md: [
-      { i: 'poke-card-1', x: 0, y: 0, w: 1, h: 10 },
-      { i: 'poke-card-2', x: 1, y: 0, w: 1, h: 10 },
-      { i: 'poke-card-3', x: 2, y: 0, w: 1, h: 10 },
-    ],
-    sm: [
-      { i: 'poke-card-1', x: 0, y: 0, w: 1, h: 10 },
-      { i: 'poke-card-2', x: 1, y: 0, w: 1, h: 10 },
-      { i: 'poke-card-3', x: 2, y: 0, w: 1, h: 10 },
-    ],
-    xs: [
-      { i: 'poke-card-1', x: 0, y: 0, w: 1, h: 10 },
-      { i: 'poke-card-2', x: 1, y: 0, w: 1, h: 10 },
-      { i: 'poke-card-3', x: 2, y: 0, w: 1, h: 10 },
-    ],
-    xxs: [
-      { i: 'poke-card-1', x: 0, y: 0, w: 1, h: 10 },
-      { i: 'poke-card-2', x: 1, y: 0, w: 1, h: 10 },
-      { i: 'poke-card-3', x: 2, y: 0, w: 1, h: 10 },
-    ],
-  };
+  useEffect(() => {
+    if(displayCards.length > 0){
+        setLayout(generateLayout());
+    }
+  }, [displayCards]);
 
   return (
     <>
       <NavBar />
-      <Container>
-        <TitleBar>
+        <FilterBar>
           <SearchInput placeholder="Search by Name" />
           <SearchInput placeholder="Search by Expansion" />
           <select
@@ -80,33 +90,35 @@ const CardsView = ({ selectPokemon }: CardsViewProp) => {
               return <option value={card.type}>{card.type}</option>;
             })}
           </select>
-        </TitleBar>
+        </FilterBar>
         {displayCards && (
-          <CardGrid
-            layouts={layouts}
-            breakpoints={{ lg: 1200, md: 1200, sm: 1200, xs: 1200, xxs: 0 }}
-            cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+          <GridLayout
+          layout={layout}
+          rowHeight={425}
+          width={1500}
+          cols={cardPerRow}
+          margin={[0,0]}
           >
             {displayCards.map((cardData: PokeCard, index) => {
               return (
+              <div key={`${pokeCardIdTemplate}${index}`}>
                 <PokemonCard
-                  key={`poke-card-${index + 1}`}
                   cardData={cardData}
                   onClick={() => {
                     selectPokemon(cardData);
                     navigate(BATTLE);
                   }}
                 />
+              </div>
               );
             })}
-          </CardGrid>
+          </GridLayout>
         )}
-      </Container>
     </>
   );
 };
 
-const TitleBar = styled.div`
+const FilterBar = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -118,16 +130,6 @@ const TitleBar = styled.div`
 
 const SearchInput = styled.input`
   height: 20px;
-`;
-
-const CardGrid = styled(ResponsiveGridLayout)``;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 100%;
 `;
 
 export default CardsView;
