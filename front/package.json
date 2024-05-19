@@ -29,6 +29,7 @@
     "dotenv": "^16.4.1",
     "dotenv-vault": "1.26.0",
     "firebase": "^10.7.1",
+    "firebase-tools": "^13.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-grid-layout": "^1.4.4",
