@@ -1,3 +1,4 @@
+
 export type UserData = {
   id: string | undefined;
   name: string;
@@ -8,7 +9,5 @@ export type UserData = {
 export type Configuration = {
   clientId: string | undefined;
   environment: string;
-  id: string;
   backendURL: string;
-  name: string;
 };

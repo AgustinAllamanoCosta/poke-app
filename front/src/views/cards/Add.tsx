@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import { useCallback, useContext, useState } from 'react';
+import { useContext } from 'react';
 import { UserInformationContext } from '../../contexts/userContext';
-import { googleLogout } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
-import { INDEX } from '../../constants/routePaths';
 import { useAPI } from '../../hooks/useApi';
 import { useForm, SubmitHandler } from "react-hook-form"
+import { PokeCard } from './View';
 
 export enum POKEMON_TYPE {
   ELECTRIC = 'Electric',
@@ -38,13 +37,6 @@ const AddCardsView = () => {
     formState: { errors },
   } = useForm<NewCard>()
 
-  const logOut = useCallback(() => {
-    googleLogout();
-    userInformation.setUserData(undefined);
-    navigate(INDEX);
-  }, [userInformation.userData]);
-
-
   const onAdd: SubmitHandler<NewCard> = async (data)=>{
     if(userInformation.userData?.id){
       data.userId = userInformation.userData.id;
@@ -59,24 +51,16 @@ const AddCardsView = () => {
       <input defaultValue="0" {...register("hp",{ required: true })} />
       <select {...register("pokemonType", { required: true })}>
         <option value="">Select...</option>
-        <option value="A">Option A</option>
-        <option value="B">Option B</option>
       </select>
       <select {...register("cardtype", { required: true })}>
         <option value="">Select...</option>
-        <option value="A">Option A</option>
-        <option value="B">Option B</option>
       </select>
       <select {...register("weaknesType")}>
         <option value="">Select...</option>
-        <option value="A">Option A</option>
-        <option value="B">Option B</option>
       </select>
       <input defaultValue="0" {...register("weaknessMultiplier")} />
       <select {...register("resistanceType")}>
         <option value="">Select...</option>
-        <option value="A">Option A</option>
-        <option value="B">Option B</option>
       </select>
       <input defaultValue="0" {...register("resistancePoint")} />
       <input defaultValue="expansion" {...register("expansion", { required: true })} />

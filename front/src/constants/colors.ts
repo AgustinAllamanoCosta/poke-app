@@ -1,6 +1,9 @@
+const YELLOW: string = '';
+
 export const THEME_ONE = {
-  backgorund: '#E65241',
+  backgorund: '#97C7DD',
   boder: '#1B1A55',
-  cardBackGround: '#FFCD7B',
   fontColor: '#FFFF',
+  barBackground: '#645AA3',
+  cardBackground: '#645AA3'
 };

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useContext } from 'react';
+import { configuration } from '../config/appConfig';
 import { UserInformationContext } from '../contexts/userContext';
 import { NewCard } from '../views/cards/Add';
-import { PokeCard } from '../views/cards/View';
 
 export const useAPI = () => {
   const userInformation = useContext(UserInformationContext);
@@ -11,7 +11,7 @@ export const useAPI = () => {
     console.group('User Crads');
     console.debug('userid', userInformation.userData?.id);
     const backResponse = await axios.get(
-      `http://localhost:3000/cards/user/${userInformation.userData?.id}`,
+      `${configuration.backendURL}/cards/user/${userInformation.userData?.id}`,
       {
         headers: {
           authorization: `Bearer ${userInformation.userData?.accessToken}`,
@@ -28,12 +28,12 @@ export const useAPI = () => {
       return [];
     }
   };
-  
+
   const registerUser = async (access_token: string) => {
     console.group('Register User');
     console.debug('Regiter new user');
     const backResponse = await axios.post(
-      'http://localhost:3000/register',
+      `${configuration.backendURL}/register`,
       { email: 'agustinallamanocosta@gmail.com' },
       {
         headers: {
@@ -50,7 +50,7 @@ export const useAPI = () => {
     console.group('Add new Card');
     console.debug('Card to add ', newCard);
     const backResponse = await axios.post(
-      'http://localhost:3000/cards',
+      `${configuration.backendURL}/cards`,
       { ...newCard, userId: userInformation.userData?.id },
       {
         headers: {
@@ -64,5 +64,23 @@ export const useAPI = () => {
     return backResponse.data;
   };
 
-  return { getUserCards, registerUser, addNewCard };
+  const battle = async (challengesPokemonId: string, rivalName: string) => {
+    console.group('Battle ');
+    console.debug('between ', challengesPokemonId, rivalName);
+    const backResponse = await axios.get(
+      `${configuration.backendURL}/battle/${challengesPokemonId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${userInformation.userData?.accessToken}`,
+          Accept: 'application/json',
+        },
+        params: { rival: rivalName }
+      },
+    );
+    console.debug('battle result ', backResponse.data);
+    console.groupEnd();
+    return backResponse.data;
+  };
+
+  return { getUserCards, registerUser, addNewCard, battle };
 };

@@ -39,6 +39,8 @@ const Container = styled.div`
 `;
 
 const LoginCardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 43vh;
   height: 25vh;
   display: flex;
