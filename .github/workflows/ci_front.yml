@@ -116,5 +116,5 @@ jobs:
           context: ./front
           push: true
           file: ./front/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: front
           labels: front
