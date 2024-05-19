@@ -5,6 +5,9 @@ import { pokeEmail, pokeUserFactory } from '../../test/fixture/auth';
 import { ConfigService } from '@nestjs/config';
 import { Repository } from 'typeorm';
 import { PokeUser } from './entity/pokeUser.entity';
+import { v4 as uuidv4 } from 'uuid';
+
+jest.mock('uuid', () => ({ 'v4': function v4(){ return 'some-uuid'} }));
 
 describe('Auth Controller', () => {
   let authController: AuthController;
@@ -29,10 +32,12 @@ describe('Auth Controller', () => {
     userRepo = app.get<Repository<PokeUser>>('PokeUserRepository');
   });
 
+  afterAll(()=>{ jest.clearAllMocks() });
+
   it('Should register an new poke user', async () => {
     const registerUser = await authController.registerPokeUser(pokeEmail);
 
-    expect({ wasUserCreated: true }).toStrictEqual(registerUser);
+    expect({ id: 'some-uuid', wasUserCreated: true }).toStrictEqual(registerUser);
   });
 
   it('Should not register an user which already exist in the database', async () => {
@@ -40,6 +45,6 @@ describe('Auth Controller', () => {
 
     const registerUser = await authController.registerPokeUser(pokeEmail);
 
-    expect({ wasUserCreated: false }).toStrictEqual(registerUser);
+    expect({ id: 'some-uuid', wasUserCreated: false }).toStrictEqual(registerUser);
   });
 });

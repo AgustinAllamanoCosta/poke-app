@@ -18,13 +18,13 @@ describe('CardsController', () => {
         if (token === 'PokeCardRepository') {
           return {
             save: jest.fn(),
-            findOneBy: jest.fn(),
+            findOne: jest.fn(),
           };
         }
         if (token === 'PokeUserRepository') {
           return {
             save: jest.fn(),
-            findOneBy: jest.fn().mockResolvedValue(pokeUserFactory()),
+            findOne: jest.fn().mockResolvedValue(pokeUserFactory()),
           };
         }
       })

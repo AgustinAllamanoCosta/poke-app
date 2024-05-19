@@ -7,7 +7,23 @@ describe('BattleService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [BattleService],
-    }).compile();
+    }).useMocker((token) => {
+        if (token === 'PokeCardRepository') {
+          return {
+            save: jest.fn(),
+            findOneBy: jest.fn().mockImplementation(() => {
+              return null;
+            }),
+          };
+        }
+        if (token === 'PokeUserRepository') {
+          return {
+            findOne: jest.fn(),
+            save: jest.fn(),
+          };
+        }
+      })
+      .compile();
 
     service = module.get<BattleService>(BattleService);
   });

@@ -27,7 +27,7 @@ describe('CardsService', () => {
         }
         if (token === 'PokeUserRepository') {
           return {
-            findOneBy: jest.fn(),
+            findOne: jest.fn(),
             save: jest.fn(),
           };
         }
@@ -46,7 +46,7 @@ describe('CardsService', () => {
   it('Should create a card into the database', async () => {
     const newCard: CreateCardsDTO = cardsDTOFactory();
     const user: PokeUser = pokeUserFactory();
-    jest.spyOn(userRepo, 'findOneBy').mockResolvedValue(user);
+    jest.spyOn(userRepo, 'findOne').mockResolvedValue(user);
     const numberOfCardsCreated: number = 1;
     const numberOfUserFounds: number = 1;
     const numberOfUserUpdated: number = 1;
@@ -54,7 +54,7 @@ describe('CardsService', () => {
     await service.createNewCard(newCard);
 
     expect(cardRepo.save).toBeCalledTimes(numberOfCardsCreated);
-    expect(userRepo.findOneBy).toBeCalledTimes(numberOfUserFounds);
+    expect(userRepo.findOne).toBeCalledTimes(numberOfUserFounds);
     expect(userRepo.save).toBeCalledTimes(numberOfUserUpdated);
   });
 });
