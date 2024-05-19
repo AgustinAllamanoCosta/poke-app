@@ -6,9 +6,7 @@ import { PokeCard } from './entity/Card.Entity';
 import { PokeUser } from '../auth/entity/pokeUser.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([PokeCard, PokeUser]),
-  ],
+  imports: [TypeOrmModule.forFeature([PokeCard, PokeUser])],
   controllers: [CardsController],
   providers: [CardsService],
 })

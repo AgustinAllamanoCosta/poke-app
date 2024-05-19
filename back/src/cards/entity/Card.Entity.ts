@@ -1,5 +1,10 @@
 import { PokeUser } from '../../auth/entity/pokeUser.entity';
-import { CARD_TYPE, POKEMON_TYPE, Weakness, Resistance } from '../../types/cards';
+import {
+  CARD_TYPE,
+  POKEMON_TYPE,
+  Weakness,
+  Resistance,
+} from '../../types/cards';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 
 @Entity()
@@ -8,7 +13,7 @@ export class PokeCard {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @ManyToMany(() => PokeUser, pokeUser => pokeUser.cards)
+  @ManyToMany(() => PokeUser, (pokeUser) => pokeUser.cards)
   public pokeUser: PokeUser[];
 
   @Column({ nullable: false })

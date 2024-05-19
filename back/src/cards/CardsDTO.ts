@@ -1,4 +1,11 @@
-import { IsString, IsInt, IsEnum, IsNotEmpty, IsUUID, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsInt,
+  IsEnum,
+  IsNotEmpty,
+  IsUUID,
+  IsOptional,
+} from 'class-validator';
 import { CARD_TYPE, POKEMON_TYPE } from '../types/cards';
 
 export class CreateCardsDTO {

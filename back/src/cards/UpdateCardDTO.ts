@@ -45,5 +45,4 @@ export class UpdateCardDTO {
   @IsOptional()
   @IsInt()
   public resistancePoint: number;
-
 }

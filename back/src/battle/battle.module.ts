@@ -7,10 +7,8 @@ import { PokeUser } from '../auth/entity/pokeUser.entity';
 import { CardsService } from '../cards/cards.service';
 
 @Module({
-  imports: [
-  TypeOrmModule.forFeature([PokeCard, PokeUser]),
-  ],
+  imports: [TypeOrmModule.forFeature([PokeCard, PokeUser])],
   controllers: [BattleController],
-  providers: [BattleService, CardsService]
+  providers: [BattleService, CardsService],
 })
 export class BattleModule {}

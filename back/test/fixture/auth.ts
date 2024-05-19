@@ -6,7 +6,7 @@ export const pokeEmail: RegisterUserDTO = { email: 'ash.ketchum@gmail.com' };
 
 export const pokeUserFactory = (email: string = pokeEmail.email): PokeUser => {
   return {
-    id: uuidv4(), 
+    id: uuidv4(),
     email: email,
     lastConnection: new Date(),
     cards: [],

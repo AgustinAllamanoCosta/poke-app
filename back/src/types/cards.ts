@@ -16,14 +16,14 @@ export enum POKEMON_TYPE {
   DARK = 'Dark',
   STEEL = 'Steel',
   ELECTRIC = 'Electric',
-  FAIRY = 'Fairy'
-};
+  FAIRY = 'Fairy',
+}
 
 export enum CARD_TYPE {
   COMMON = 'Common',
   UNCOMMON = 'Uncommon',
-  RARE = 'Rare'
-};
+  RARE = 'Rare',
+}
 
 export type Weakness = {
   multiplier: number;

@@ -5,7 +5,9 @@ import pjson from '../package.json';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { logger: [ 'error', 'log', 'debug' , 'warn' ] });
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'log', 'debug', 'warn'],
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Poken App Backend')
