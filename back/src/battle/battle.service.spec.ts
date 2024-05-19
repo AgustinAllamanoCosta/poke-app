@@ -7,7 +7,8 @@ describe('BattleService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [BattleService],
-    }).useMocker((token) => {
+    })
+      .useMocker((token) => {
         if (token === 'PokeCardRepository') {
           return {
             save: jest.fn(),
