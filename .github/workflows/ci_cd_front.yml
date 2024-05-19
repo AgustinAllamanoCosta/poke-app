@@ -163,3 +163,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_POKE_APP_F14FD }}
           projectId: poke-app-f14fd
           channelId: live
+          entryPoint: front/
