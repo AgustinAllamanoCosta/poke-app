@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { UserInformationContext } from '../../contexts/userContext';
 import { useNavigate } from 'react-router-dom';
 import { BATTLE } from '../../constants/routePaths';
-import GridLayout from "react-grid-layout";
+import GridLayout from 'react-grid-layout';
 import PokemonCard from '../../components/card/Card';
 import { useAPI } from '../../hooks/useApi';
 import { NavBar } from '../../components/bar/Bar';
@@ -35,7 +35,7 @@ const CardsView = ({ selectPokemon }: CardsViewProp) => {
     setDisplayCards(cards);
   };
 
-  const generateLayout = ()=>{
+  const generateLayout = () => {
     const layout: Array<GridLayout.Layout> = [];
     let initX: number = 0;
     let initY: number = 0;
@@ -43,7 +43,7 @@ const CardsView = ({ selectPokemon }: CardsViewProp) => {
     const cardWidth: number = 1;
     const cardHeight: number = 1;
 
-    displayCards.forEach((pokeCard: PokeCard, index: number)=>{
+    displayCards.forEach((pokeCard: PokeCard, index: number) => {
       const newLayoutConf: GridLayout.Layout = {
         i: `${pokeCardIdTemplate}${index}`,
         x: initX,
@@ -52,55 +52,54 @@ const CardsView = ({ selectPokemon }: CardsViewProp) => {
         h: cardHeight,
       };
       layout.push(newLayoutConf);
-      if( initX === 0 || initX/cardWidth < cardPerRow){
-          initX+= cardWidth;
-      }else{
-        initX=0;
-        initY+= cardHeight;
+      if (initX === 0 || initX / cardWidth < cardPerRow) {
+        initX += cardWidth;
+      } else {
+        initX = 0;
+        initY += cardHeight;
       }
     });
     console.debug('new layout', layout);
     return layout;
   };
 
-
   useEffect(() => {
     loadCard();
   }, []);
 
   useEffect(() => {
-    if(displayCards.length > 0){
-        setLayout(generateLayout());
+    if (displayCards.length > 0) {
+      setLayout(generateLayout());
     }
   }, [displayCards]);
 
   return (
     <>
       <NavBar />
-        <FilterBar>
-          <SearchInput placeholder="Search by Name" />
-          <SearchInput placeholder="Search by Expansion" />
-          <select
-            onChange={(data) => {
-              setTypeFilter(data.target.value);
-            }}
-          >
-            <option value="">Select...</option>
-            {displayCards.map((card: PokeCard) => {
-              return <option value={card.type}>{card.type}</option>;
-            })}
-          </select>
-        </FilterBar>
-        {displayCards && (
-          <GridLayout
+      <FilterBar>
+        <SearchInput placeholder="Search by Name" />
+        <SearchInput placeholder="Search by Expansion" />
+        <select
+          onChange={(data) => {
+            setTypeFilter(data.target.value);
+          }}
+        >
+          <option value="">Select...</option>
+          {displayCards.map((card: PokeCard) => {
+            return <option value={card.type}>{card.type}</option>;
+          })}
+        </select>
+      </FilterBar>
+      {displayCards && (
+        <GridLayout
           layout={layout}
           rowHeight={425}
           width={1500}
           cols={cardPerRow}
-          margin={[0,0]}
-          >
-            {displayCards.map((cardData: PokeCard, index) => {
-              return (
+          margin={[0, 0]}
+        >
+          {displayCards.map((cardData: PokeCard, index) => {
+            return (
               <div key={`${pokeCardIdTemplate}${index}`}>
                 <PokemonCard
                   cardData={cardData}
@@ -110,10 +109,10 @@ const CardsView = ({ selectPokemon }: CardsViewProp) => {
                   }}
                 />
               </div>
-              );
-            })}
-          </GridLayout>
-        )}
+            );
+          })}
+        </GridLayout>
+      )}
     </>
   );
 };

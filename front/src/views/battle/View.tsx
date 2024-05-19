@@ -59,7 +59,11 @@ const BattleView = ({ pokemonCard }: BattleViewProps) => {
                 />
               </Options>
             </Body>
-            { result != undefined && <ResultTag result={result} >{result ? 'Success' : 'Fail'}</ResultTag> }
+            {result != undefined && (
+              <ResultTag result={result}>
+                {result ? 'Success' : 'Fail'}
+              </ResultTag>
+            )}
           </>
         )}
       </Container>
@@ -67,14 +71,14 @@ const BattleView = ({ pokemonCard }: BattleViewProps) => {
   );
 };
 
-const ResultTag = styled.span<{ result:boolean | undefined }>`
-    font-size:${FONTS.SUB_TITLE};
-    background-color: ${ (props)=>( props.result ? 'Green' : 'Red') };
-    width: 100px;
-    display:flex;
-    justify-content: center;
-    border-radius: 10px;
-    margin: 10px;
+const ResultTag = styled.span<{ result: boolean | undefined }>`
+  font-size: ${FONTS.SUB_TITLE};
+  background-color: ${(props) => (props.result ? 'Green' : 'Red')};
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  border-radius: 10px;
+  margin: 10px;
 `;
 
 const Header = styled.div`
