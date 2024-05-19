@@ -116,5 +116,5 @@ jobs:
           context: ./front
           push: true
           file: ./front/Dockerfile
-          tags: front
+          tags: ghcr.io/agustinallamanocosta/poke-app:front
           labels: front

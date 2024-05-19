@@ -140,7 +140,7 @@ jobs:
           context: ./back
           push: true
           file: ./back/Dockerfile
-          tags: back
+          tags: ghcr.io/agustinallamanocosta/poke-app:back
           labels: back
 
   deployment:
