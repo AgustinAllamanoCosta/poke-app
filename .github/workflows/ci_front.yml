@@ -13,6 +13,12 @@ on:
     branches:
       - "main"
 
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./front
+
 jobs:
   install-dep:
     runs-on: ubuntu-latest
