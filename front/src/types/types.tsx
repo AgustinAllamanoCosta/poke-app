@@ -66,10 +66,10 @@ export type NewCard = {
   hp: number;
   pokemonType: POKEMON_TYPE;
   cardtype: CARD_TYPE;
-  weaknesType: POKEMON_TYPE;
-  weaknessMultiplier: number;
-  resistanceType: POKEMON_TYPE;
-  resistancePoint: number;
+  weaknesType: POKEMON_TYPE | undefined;
+  weaknessMultiplier: number | undefined;
+  resistanceType: POKEMON_TYPE | undefined;
+  resistancePoint: number | undefined;
   expansion: string;
   attack: number;
 };
