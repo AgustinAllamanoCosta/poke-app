@@ -16,9 +16,7 @@ export class CardsService {
 
   public async createNewCard(createCardDTO: CreateCardsDTO): Promise<void> {
     console.group('creation new card');
-    const user: PokeUser | null = await this.usersRepository.findOneBy({
-      id: createCardDTO.userId,
-    });
+    const user: PokeUser | null = await this.usersRepository.findOne({ where: { id: createCardDTO.userId }, relations: ['cards']});
 
     console.debug('user found ', user);
 
@@ -34,18 +32,15 @@ export class CardsService {
     console.debug('card in base', cardInBase);
 
     if (cardInBase) {
-      return;
+      console.debug('Card already exist');
+      user.cards.push(cardInBase);
+      this.addCardToUser(user,cardInBase);
+      await this.usersRepository.save(user);
     } else {
       const newCard: PokeCard = new PokeCard();
       console.debug('new card', newCard);
-
-      if(user.cards){
-        user.cards.push(newCard);
-      }else{
-        user.cards = [newCard];
-      }
-
       this.mapCardDTOToNewCard(newCard,createCardDTO,user);
+      this.addCardToUser(user,newCard);
       console.debug('user with new card', user);
       await this.usersRepository.save(user);
       await this.cardsRepository.save(newCard);
@@ -85,17 +80,13 @@ export class CardsService {
     userId: string,
     cardId: string,
   ): Promise<void> {
-    const card: PokeCard | null = await this.cardsRepository.findOneBy({
-      id: cardId,
-    });
+    const card: PokeCard | null = await this.cardsRepository.findOne({ where: { id: cardId }, relations: ['pokeUser']});
 
     if (!card) {
       return;
     }
 
-    const user: PokeUser | null = await this.usersRepository.findOneBy({
-      id: userId,
-    });
+    const user: PokeUser | null = await this.usersRepository.findOne({ where: { id: userId }, relations: ['cards']});
     if (!user) {
       return;
     }
@@ -111,7 +102,15 @@ export class CardsService {
     await this.cardsRepository.save(card);
   }
 
-  private mapCardDTOToNewCard(newCard: PokeCard, DTO: CreateCardsDTO, user: PokeUser): void{  
+  private addCardToUser(user:PokeUser, card: PokeCard){
+      if(user.cards){
+        user.cards.push(card);
+      }else{
+        user.cards = [card];
+      }
+  }
+
+  private mapCardDTOToNewCard(newCard: PokeCard, DTO: CreateCardsDTO, user: PokeUser): void{
       newCard.pokeUser = [user];
       Object.assign(newCard, DTO);
       newCard.weakness = { type: DTO.weaknesType, multiplier: DTO.weaknessMultiplier };

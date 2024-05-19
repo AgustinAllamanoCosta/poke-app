@@ -12,15 +12,15 @@ import {
 export class PokeUser {
   @Column()
   @Generated('uuid')
-  id: string;
+  public id: string;
 
   @PrimaryColumn()
-  email: string;
+  public email: string;
 
   @Column({ nullable: true })
-  lastConnection: Date;
+  public lastConnection: Date;
 
   @ManyToMany(() => PokeCard, pokeCard => pokeCard.pokeUser)
   @JoinTable()
-  cards: PokeCard[];
+  public cards: PokeCard[];
 }

@@ -38,7 +38,7 @@ export class CreateCardsDTO {
   @IsInt()
   public resistancePoint: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   public expansion: string;
 

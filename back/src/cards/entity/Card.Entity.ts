@@ -1,4 +1,3 @@
-import { warn } from 'console';
 import { PokeUser } from '../../auth/entity/pokeUser.entity';
 import { CARD_TYPE, POKEMON_TYPE, Weakness, Resistance } from '../../types/cards';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
