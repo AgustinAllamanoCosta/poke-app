@@ -37,13 +37,6 @@ export class CardsService {
       return;
     } else {
       const newCard: PokeCard = new PokeCard();
-      newCard.pokeUser = [user];
-      newCard.cardtype = createCardDTO.cardtype;
-      newCard.pokemonType = createCardDTO.pokemonType;
-      newCard.name = createCardDTO.name;
-      newCard.hp = createCardDTO.hp;
-      newCard.attack = createCardDTO.attack;
-      newCard.expansion = createCardDTO.expansion;
       console.debug('new card', newCard);
 
       if(user.cards){
@@ -52,6 +45,7 @@ export class CardsService {
         user.cards = [newCard];
       }
 
+      this.mapCardDTOToNewCard(newCard,createCardDTO,user);
       console.debug('user with new card', user);
       await this.usersRepository.save(user);
       await this.cardsRepository.save(newCard);
@@ -67,6 +61,11 @@ export class CardsService {
     } else {
       return [];
     }
+  }
+
+
+  public async getCardByName(name: string): Promise<PokeCard | null> {
+    return await this.cardsRepository.findOneBy({ name });
   }
 
   public async getCardById(id: string): Promise<PokeCard | null> {
@@ -111,4 +110,11 @@ export class CardsService {
     Object.assign(card, attrs);
     await this.cardsRepository.save(card);
   }
+
+  private mapCardDTOToNewCard(newCard: PokeCard, DTO: CreateCardsDTO, user: PokeUser): void{  
+      newCard.pokeUser = [user];
+      Object.assign(newCard, DTO);
+      newCard.weakness = { type: DTO.weaknesType, multiplier: DTO.weaknessMultiplier };
+      newCard.resistance = { type: DTO.resistanceType, points: DTO.resistancePoint };
+  };
 }

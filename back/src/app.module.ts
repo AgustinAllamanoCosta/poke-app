@@ -9,6 +9,7 @@ import { databaseConfig } from '../data.source';
 import { DataSourceOptions } from 'typeorm';
 import { AuthModule } from './auth/auth.module';
 import { CardsModule } from './cards/cards.module';
+import { BattleModule } from './battle/battle.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CardsModule } from './cards/cards.module';
     TypeOrmModule.forRoot(databaseConfig as DataSourceOptions),
     AuthModule,
     CardsModule,
+    BattleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,7 +1,7 @@
 import { warn } from 'console';
 import { PokeUser } from '../../auth/entity/pokeUser.entity';
-import { CARD_TYPE, POKEMON_TYPE } from '../../types/cards';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import { CARD_TYPE, POKEMON_TYPE, Weakness, Resistance } from '../../types/cards';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 
 @Entity()
 export class PokeCard {
@@ -31,6 +31,26 @@ export class PokeCard {
     default: CARD_TYPE.COMMON,
   })
   public cardtype: CARD_TYPE;
+
+  @Column({
+    nullable: true,
+    type: 'text',
+    transformer: {
+      to: (weakness: Weakness) => JSON.stringify(weakness),
+      from: (value: string) => JSON.parse(value),
+    },
+  })
+  public weakness: Weakness;
+
+  @Column({
+    nullable: true,
+    type: 'text',
+    transformer: {
+      to: (resistance: Resistance) => JSON.stringify(resistance),
+      from: (value: string) => JSON.parse(value),
+    },
+  })
+  public resistance: Resistance;
 
   @Column({ nullable: false })
   public expansion: string;
