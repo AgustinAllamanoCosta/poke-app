@@ -1,9 +1,11 @@
 import { styled } from 'styled-components';
 import { PokeCard } from '../../views/cards/View';
 
-const PokemonCard = (cardData: PokeCard): React.JSX.Element => {
+type PokemonCradProps ={ cardData: PokeCard, onClick?: ()=>void };  
+
+const PokemonCard = ( { cardData, onClick }: PokemonCradProps ): React.JSX.Element => {
   return (
-    <Container>
+    <Container onClick={onClick ? onClick : ()=>{}}>
       <h4>{cardData.name}</h4>
       <span>HP: {cardData.hp}</span>
       <span>Type: {cardData.type}</span>

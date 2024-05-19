@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useContext } from 'react';
 import { UserInformationContext } from '../contexts/userContext';
+import { NewCard } from '../views/cards/Add';
+import { PokeCard } from '../views/cards/View';
 
 export const useAPI = () => {
   const userInformation = useContext(UserInformationContext);
@@ -26,7 +28,10 @@ export const useAPI = () => {
       return [];
     }
   };
+  
   const registerUser = async (access_token: string) => {
+    console.group('Register User');
+    console.debug('Regiter new user');
     const backResponse = await axios.post(
       'http://localhost:3000/register',
       { email: 'agustinallamanocosta@gmail.com' },
@@ -37,7 +42,27 @@ export const useAPI = () => {
         },
       },
     );
+    console.groupEnd();
     return backResponse.data;
   };
-  return { getUserCards, registerUser };
+
+  const addNewCard = async (newCard: NewCard ) => {
+    console.group('Add new Card');
+    console.debug('Card to add ', newCard);
+    const backResponse = await axios.post(
+      'http://localhost:3000/cards',
+      { ...newCard, userId: userInformation.userData?.id },
+      {
+        headers: {
+          Authorization: `Bearer ${userInformation.userData?.accessToken}`,
+          Accept: 'application/json',
+        },
+      },
+    );
+    console.debug('Back response ', backResponse.data);
+    console.groupEnd();
+    return backResponse.data;
+  };
+
+  return { getUserCards, registerUser, addNewCard };
 };

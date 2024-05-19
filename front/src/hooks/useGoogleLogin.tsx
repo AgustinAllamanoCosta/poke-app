@@ -25,7 +25,7 @@ export const useGoogleLoginActions = (redirectPath: string) => {
         );
         const backResponse = await registerUser(codeResponse.access_token);
         const newUser: UserData = {
-          id: backResponse.data.id,
+          id: backResponse.id,
           name: googleResponse.data.name,
           photoURL: googleResponse.data.picture,
           accessToken: codeResponse.access_token,

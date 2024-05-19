@@ -4,7 +4,7 @@ import { UserInformationContext } from '../../contexts/userContext';
 import { googleLogout } from '@react-oauth/google';
 import { ErrorHandlerContext } from '../../contexts/errorHandlerContext';
 import { useNavigate } from 'react-router-dom';
-import { INDEX } from '../../constants/routePaths';
+import { BATTLE, INDEX } from '../../constants/routePaths';
 import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import { Button } from '../../components/button/Button';
 import PokemonCard from '../../components/card/Card';
@@ -20,7 +20,11 @@ export type PokeCard = {
   attack: number;
 };
 
-const CardsView = () => {
+type CardsViewProp = {
+  selectPokemon: (pokemon:PokeCard)=>void;
+  };
+
+const CardsView = ({ selectPokemon }:CardsViewProp) => {
   const errorContext = useContext(ErrorHandlerContext);
   const userInformation = useContext(UserInformationContext);
   const navigate = useNavigate();
@@ -90,7 +94,12 @@ const CardsView = () => {
           return (
             <PokemonCard
               key={`poke-card-${index + 1}`}
-              {...cardData}
+              cardData={cardData}
+              onClick={()=>{
+                console.log('selecting pokemon');
+                selectPokemon(cardData);
+                navigate(BATTLE)
+                }}
             />
           );
         })}
@@ -111,8 +120,6 @@ const TitleBar = styled.div`
 const SearchInput = styled.input`
   height: 20px;
 `;
-
-const Card = styled.div``;
 
 const CardGrid = styled(ResponsiveGridLayout)``;
 
