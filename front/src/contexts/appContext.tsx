@@ -11,6 +11,7 @@ type AppContextProps = {
 };
 
 const AppContext = ({ children }: AppContextProps) => {
+  console.log('configuratoin ', configuration);
   return (
     <AppContainer>
       <GlobalStyles />

@@ -75,12 +75,8 @@ const CardsView = ({ selectPokemon }: CardsViewProp) => {
       <Form>
         <Form.Group className="py-3">
           <Container>
-            <Row
-              xs={3}
-              lg={3}
-              md={3}
-            >
-              <Col>
+            <Row>
+              <Col lg={true}>
                 <FloatingLabel
                   controlId="floatingName"
                   label="Filter by Name"
@@ -148,11 +144,16 @@ const CardsView = ({ selectPokemon }: CardsViewProp) => {
         </Form.Group>
       </Form>
       <Container>
-        <Row>
+        <Row
+          xs={1}
+          md={2}
+          lg={3}
+          xxl={4}
+        >
           {displayCards.map((pokeCard: PokeCard, index: number) => {
             return (
               <Col
-                xs={3}
+                lg={true}
                 key={`${pokeCard.name}-${index}`}
               >
                 <PokemonCard
