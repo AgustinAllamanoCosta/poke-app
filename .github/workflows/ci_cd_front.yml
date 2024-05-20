@@ -87,7 +87,9 @@ jobs:
           node-version: 21.x
 
       - name: Build
-        run: yarn build
+        run: |
+          yarn vault:pull production .env --dotenvMe='${{ secrets.DOTENV_ME_FRONT }}' --yes
+          yarn build
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
@@ -149,12 +151,6 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           name: production-build
           path: ./front/dist
-
-      - name: Configure Envoironment
-        shell: bash
-        run: |
-          yarn vault:pull production .env --dotenvMe='${{ secrets.DOTENV_ME_FRONT }}' --yes
-          mv .env ./dist
 
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0.7.1
