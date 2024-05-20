@@ -14,17 +14,24 @@ export class AppController {
 
   @Get()
   @ApiOperation({ summary: 'Well Hello' })
-  @ApiResponse({ status: 200, description: 'Whell Hello'})
-  @ApiResponse({ status: 401, description: 'Not Authorized'})
+  @ApiResponse({ status: 200, description: 'Whell Hello' })
+  @ApiResponse({ status: 401, description: 'Not Authorized' })
   getHello(): string {
     return this.appService.getHello();
   }
 
   @Get('/check')
   @ApiOperation({ summary: 'Return time and env' })
-  @ApiResponse({ status: 200, description: 'Return and "check" the app status'})
-  @ApiResponse({ status: 401, description: 'Not Authorized'})
-  @ApiResponse({ status: 500, description: 'App can not connect to the db, retrive env configuraiton or system time'})
+  @ApiResponse({
+    status: 200,
+    description: 'Return and "check" the app status',
+  })
+  @ApiResponse({ status: 401, description: 'Not Authorized' })
+  @ApiResponse({
+    status: 500,
+    description:
+      'App can not connect to the db, retrive env configuraiton or system time',
+  })
   public getCheck(): HealthCheckResponse {
     return this.appService.getHealthCheck();
   }

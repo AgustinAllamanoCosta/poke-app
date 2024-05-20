@@ -1,10 +1,9 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class BattlerResultDTO {
-
   @ApiProperty()
   challengerName: string;
-  
+
   @ApiProperty()
   rivalName: string;
 

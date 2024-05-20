@@ -6,15 +6,14 @@ import { NestApplicationOptions, ValidationPipe } from '@nestjs/common';
 import fs from 'fs';
 
 async function bootstrap() {
-  
   const appOptions: NestApplicationOptions = {
     logger: ['error', 'log', 'debug', 'warn'],
   };
 
-  if(process.env.environment === 'production'){
+  if (process.env.environment === 'production') {
     appOptions.httpsOptions = {
-      key: fs.readFileSync(__dirname +'/secrets/key.pem'),
-      cert: fs.readFileSync(__dirname +'/secrets/cert.pem'),
+      key: fs.readFileSync(__dirname + '/secrets/key.pem'),
+      cert: fs.readFileSync(__dirname + '/secrets/cert.pem'),
     };
   }
 

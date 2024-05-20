@@ -21,15 +21,11 @@ export class AuthService {
   }
 
   public async validateToken(idToken: string): Promise<TokenPayload> {
-    try {
-      const ticket = await this.googleClient.verifyIdToken({
-        idToken,
-        audience: this.configuration.get<string>('oauth_client'),
-      });
-      return ticket.getPayload();
-    } catch (error) {
-      throw new Error(this.errorMessage);
-    }
+    const ticket = await this.googleClient.verifyIdToken({
+      idToken,
+      audience: this.configuration.get<string>('oauth_client'),
+    });
+    return ticket.getPayload();
   }
 
   public async validateUser(email: string): Promise<void> {

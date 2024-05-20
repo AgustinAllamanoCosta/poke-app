@@ -1,4 +1,8 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import {
+  Injectable,
+  NestMiddleware,
+  BadRequestException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response, NextFunction } from 'express';
 import { AuthService } from '../auth.service';
@@ -31,7 +35,7 @@ export class AuthMiddleware implements NestMiddleware {
       const email: string = googleTokenInfo['email'];
 
       if (!email) {
-        throw new Error('Invalid Token, not emial');
+        throw new BadRequestException('Invalid Token, not emial');
       }
 
       await this.authService.validateUser(email);

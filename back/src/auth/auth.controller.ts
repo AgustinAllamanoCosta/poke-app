@@ -11,14 +11,16 @@ import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('Auth')
 @Controller('register')
 export class AuthController {
-
   constructor(private readonly authService: AuthService) {}
 
   @Post('/')
   @ApiOperation({ summary: 'Add a new user into then data base' })
-  @ApiResponse({ status: 201, description: 'Add a new user into the data base by email'})
-  @ApiResponse({ status: 401, description: 'Not Authorized'})
-  @ApiResponse({ status: 500, description: 'App can not connect to the db'})
+  @ApiResponse({
+    status: 201,
+    description: 'Add a new user into the data base by email',
+  })
+  @ApiResponse({ status: 401, description: 'Not Authorized' })
+  @ApiResponse({ status: 500, description: 'App can not connect to the db' })
   async registerPokeUser(
     @Body() body: RegisterUserDTO,
   ): Promise<RegisterResponse> {

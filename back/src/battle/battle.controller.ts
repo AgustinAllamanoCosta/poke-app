@@ -18,10 +18,16 @@ export class BattleController {
   ) {}
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Get the result of a simulation of a battle between tow Cards' })
-  @ApiResponse({ status: 201, description: 'Add a new user into the data base by email', type: BattlerResultDTO})
-  @ApiResponse({ status: 401, description: 'Not Authorized'})
-  @ApiResponse({ status: 500, description: 'App can not connect to the db'})
+  @ApiOperation({
+    summary: 'Get the result of a simulation of a battle between tow Cards',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Add a new user into the data base by email',
+    type: BattlerResultDTO,
+  })
+  @ApiResponse({ status: 401, description: 'Not Authorized' })
+  @ApiResponse({ status: 500, description: 'App can not connect to the db' })
   public async getBattlerResult(
     @Param('id') challengesPokemonId: string,
     @Query('rival') rivalPokemonName: string,

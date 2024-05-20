@@ -1,4 +1,4 @@
-import { PokeCard } from "src/cards/entity/Card.Entity";
+import { PokeCard } from 'src/cards/entity/Card.Entity';
 
 export enum POKEMON_TYPE {
   NORMAL = 'Normal',

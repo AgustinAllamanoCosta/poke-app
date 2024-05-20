@@ -3,7 +3,6 @@ import { CARD_TYPE, POKEMON_TYPE } from '../types/cards';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateCardDTO {
-
   @ApiProperty({ required: false })
   @IsOptional()
   @IsUUID()
@@ -39,7 +38,7 @@ export class UpdateCardDTO {
   @IsInt()
   public attack: number;
 
-  @ApiProperty({required: false})
+  @ApiProperty({ required: false })
   @IsOptional()
   @IsEnum(POKEMON_TYPE)
   public weaknesType: POKEMON_TYPE;
