@@ -59,4 +59,9 @@ export class CardsController {
   ) {
     return await this.cardService.updateCard(id, body);
   }
+
+  @Get('/:id/rivals')
+  public async getAllTheWeaknessesAndResistanceCards(@Param('id') id: string){
+    return await this.cardService.getCardRivals(id);
+  }
 }

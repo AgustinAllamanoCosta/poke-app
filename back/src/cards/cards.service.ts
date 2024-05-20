@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PokeCard } from './entity/Card.Entity';
 import { Repository } from 'typeorm';
 import { PokeUser } from '../auth/entity/pokeUser.entity';
+import { CardRivals, POKEMON_TYPE } from 'src/types/cards';
 
 @Injectable()
 export class CardsService {
@@ -102,6 +103,27 @@ export class CardsService {
     const card: PokeCard | null = await this.cardsRepository.findOneBy({ id });
     Object.assign(card, attrs);
     await this.cardsRepository.save(card);
+  }
+
+  public async getCardRivals(cardId: string): Promise<CardRivals> {
+    const mainCard: PokeCard | null = await this.cardsRepository.findOneBy({ id: cardId });
+    const result: CardRivals = {
+      weaknessAgains: [],
+      resistanceAgains: []
+    };
+    if(mainCard){
+      const resistanceCard: PokeCard[] | null = await this.cardsRepository.findBy({ pokemonType: mainCard.resistance.type });
+      const weaknessCard: PokeCard[] | null = await this.cardsRepository.findBy({ pokemonType: mainCard.weakness.type })
+      if(resistanceCard){
+        result.resistanceAgains = resistanceCard;
+      }
+      if(weaknessCard){
+        result.weaknessAgains = weaknessCard;
+      }
+    }
+
+    return result;
+
   }
 
   private addCardToUser(user:PokeUser, card: PokeCard){

@@ -1,3 +1,5 @@
+import { PokeCard } from "src/cards/entity/Card.Entity";
+
 export enum POKEMON_TYPE {
   NORMAL = 'Normal',
   FIRE = 'Fire',
@@ -33,4 +35,9 @@ export type Weakness = {
 export type Resistance = {
   points: number;
   type: POKEMON_TYPE;
+};
+
+export type CardRivals = {
+  resistanceAgains: PokeCard[];
+  weaknessAgains: PokeCard[];
 };

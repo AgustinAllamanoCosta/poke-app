@@ -19,6 +19,7 @@ describe('CardsController', () => {
           return {
             save: jest.fn(),
             findOne: jest.fn(),
+            findOneBy: jest.fn(),
           };
         }
         if (token === 'PokeUserRepository') {
