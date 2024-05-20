@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCardsDTO } from './CardsDTO';
+import { CardRivalsDTO, CreateCardsDTO, PokeCardDTO } from './CardsDTO';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PokeCard } from './entity/Card.Entity';
 import { Repository } from 'typeorm';
@@ -51,11 +51,11 @@ export class CardsService {
     }
   }
 
-  public async getAllCardsByUserId(id: string): Promise<Array<PokeCard>> {
+  public async getAllCardsByUserId(id: string): Promise<Array<PokeCardDTO>> {
     const user: PokeUser | null = await this.usersRepository.findOne({ where: { id }, relations: ['cards']});
     console.debug('cards in user id ', id, user.cards);
     if (user) {
-      return user.cards;
+      return user.cards.map(card => Object.assign(new PokeCardDTO(), card));
     } else {
       return [];
     }
@@ -67,7 +67,11 @@ export class CardsService {
   }
 
   public async getCardById(id: string): Promise<PokeCard | null> {
-    return await this.cardsRepository.findOneBy({ id });
+    const cardEntity: PokeCard | null = await this.cardsRepository.findOneBy({ id });
+    if(cardEntity){
+      return Object.assign(new PokeCardDTO(), cardEntity);
+    }
+    return null;
   }
 
   public async removeCard(id: string): Promise<void> {
@@ -105,7 +109,7 @@ export class CardsService {
     await this.cardsRepository.save(card);
   }
 
-  public async getCardRivals(cardId: string): Promise<CardRivals> {
+  public async getCardRivals(cardId: string): Promise<CardRivalsDTO> {
     const mainCard: PokeCard | null = await this.cardsRepository.findOneBy({ id: cardId });
     const result: CardRivals = {
       weaknessAgains: [],
@@ -115,10 +119,10 @@ export class CardsService {
       const resistanceCard: PokeCard[] | null = await this.cardsRepository.findBy({ pokemonType: mainCard.resistance.type });
       const weaknessCard: PokeCard[] | null = await this.cardsRepository.findBy({ pokemonType: mainCard.weakness.type })
       if(resistanceCard){
-        result.resistanceAgains = resistanceCard;
+        result.resistanceAgains = resistanceCard.map(card => Object.assign(new PokeCardDTO(), card));
       }
       if(weaknessCard){
-        result.weaknessAgains = weaknessCard;
+        result.weaknessAgains = weaknessCard.map(card => Object.assign(new PokeCardDTO(), card));
       }
     }
 

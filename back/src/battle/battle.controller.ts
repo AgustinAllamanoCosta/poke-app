@@ -2,8 +2,14 @@ import { Controller, Get, Param, Query } from '@nestjs/common';
 import { BattleService } from './battle.service';
 import { CardsService } from '../cards/cards.service';
 import { PokeCard } from '../cards/entity/Card.Entity';
-import { BattleResult } from 'src/types/Battle';
+import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { BattlerResultDTO } from './BattleResultDTO';
 
+@ApiHeader({
+  name: 'Auhtorization',
+  description: 'google auth header',
+})
+@ApiTags('Battle')
 @Controller('battle')
 export class BattleController {
   constructor(
@@ -12,6 +18,10 @@ export class BattleController {
   ) {}
 
   @Get('/:id')
+  @ApiOperation({ summary: 'Get the result of a simulation of a battle between tow Cards' })
+  @ApiResponse({ status: 201, description: 'Add a new user into the data base by email', type: BattlerResultDTO})
+  @ApiResponse({ status: 401, description: 'Not Authorized'})
+  @ApiResponse({ status: 500, description: 'App can not connect to the db'})
   public async getBattlerResult(
     @Param('id') challengesPokemonId: string,
     @Query('rival') rivalPokemonName: string,
@@ -24,7 +34,8 @@ export class BattleController {
         await this.cardService.getCardByName(rivalPokemonName);
       console.debug('challenger ', challengesPokemon);
       console.debug('rival', rivalPokemon);
-      let response: BattleResult;
+      let response: BattlerResultDTO;
+
       if (challengesPokemon && rivalPokemon) {
         response = await this.battleService.fight(
           challengesPokemon,

@@ -9,6 +9,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 
 @Entity()
 export class PokeCard {
+
   @Column()
   @PrimaryGeneratedColumn('uuid')
   public id: string;
