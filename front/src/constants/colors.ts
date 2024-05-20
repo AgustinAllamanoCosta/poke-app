@@ -1,5 +1,3 @@
-const YELLOW: string = '';
-
 export const THEME_ONE = {
   backgorund: '#97C7DD',
   boder: '#1B1A55',

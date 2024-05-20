@@ -1,80 +1,44 @@
+import { Card, ListGroup } from 'react-bootstrap';
 import { styled } from 'styled-components';
-import { THEME_ONE } from '../../constants/colors';
-import { FONTS } from '../../constants/size';
 import { PokeCard } from '../../types/types';
 
-type PokemonCradProps = { cardData: PokeCard; onClick?: () => void };
+type PokemonCradProps = {
+  cardData: PokeCard;
+  onClick?: () => void;
+  imgSrc: string | undefined;
+};
 
 const PokemonCard = ({
   cardData,
   onClick,
+  imgSrc,
 }: PokemonCradProps): React.JSX.Element => {
+  const imagePlaceHolder =
+    'https://pbs.twimg.com/media/ERPDVqzWAAUwLRl?format=png&name=small';
   return (
-    <Container onClick={onClick ? onClick : () => {}}>
-      <Header>
-        <Name>{cardData.name}</Name>
-        <div>
-          <span>HP: </span>
-          <Name>{cardData.hp}</Name>
-        </div>
-      </Header>
-      <Image />
-      <Footer>
-        <FooterText> Type: {cardData.type}</FooterText>
-        <FooterText>Expansion: {cardData.expansion}</FooterText>
-        <FooterText>Rarity: {cardData.cardType}</FooterText>
-      </Footer>
-    </Container>
+    <CardContent onClick={onClick ? onClick : () => {}}>
+      <Card.Header>
+        <Card.Title>{cardData.name}</Card.Title>
+        <Card.Subtitle>HP: {cardData.hp}</Card.Subtitle>
+      </Card.Header>
+      <Card.Img src={imgSrc ? imgSrc : imagePlaceHolder} />
+      <Card.Body>
+        <ListGroup variant="flush">
+          <ListGroup.Item>Type {cardData.pokemonType}</ListGroup.Item>
+          <ListGroup.Item>Expansion {cardData.expansion}</ListGroup.Item>
+          <ListGroup.Item>Rarity {cardData.cardtype}</ListGroup.Item>
+        </ListGroup>
+      </Card.Body>
+    </CardContent>
   );
 };
 
-const Name = styled.span`
-  font-size: ${FONTS.TITLE};
-`;
-
-const Header = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
-  width: 100%;
-  margin-bottom: 5px;
-`;
-
-const Image = styled.img`
-  border: solid;
-  border-color: black;
-  width: 250px;
-  height: 200px;
-  margin-bottom: 25px;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  font-size: ${FONTS.SUB_TITLE};
-`;
-
-const FooterText = styled.span`
+const CardContent = styled(Card)`
+  width: 300px;
   margin: 5px;
-`;
-
-const Container = styled.div`
-    display: flex;
-    background-color: ${THEME_ONE.cardBackground};
-    flex-direction: column;
-    align-items: center;
-    padding: 7px;
-    margin: 10px;
-    border: solid;
-    border-radius: 14px;
-    width: 300px;
-    height: 400px;
-    border-color: black;
-    cursor: pointer;
-}
+  height: 530px;
+  border-radius: 14px;
+  cursor: pointer;
 `;
 
 export default PokemonCard;

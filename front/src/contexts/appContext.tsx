@@ -36,7 +36,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     background-color: ${THEME_ONE.backgorund};
     color: ${THEME_ONE.fontColor};
-    font-family: 'Iner';
+    font-family: 'Roboto';
     margin: 0px;
   }
 `;

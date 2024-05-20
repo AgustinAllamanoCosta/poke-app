@@ -25,8 +25,8 @@ export type PokeCard = {
   id: string;
   name: string;
   hp: number;
-  type: string;
-  cardType: string;
+  pokemonType: string;
+  cardtype: string;
   expansion: string;
   attack: number;
   resistance: Resistance | undefined;

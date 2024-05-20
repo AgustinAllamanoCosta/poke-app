@@ -2,10 +2,11 @@ import { googleLogout } from '@react-oauth/google';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { styled } from 'styled-components';
-import { THEME_ONE } from '../../constants/colors';
 import { ADD_CARDS, CARDS } from '../../constants/routePaths';
 import { UserInformationContext } from '../../contexts/userContext';
-import { Button } from '../button/Button';
+import { PokeButton } from '../button/Button';
+import Navbar from 'react-bootstrap/Navbar';
+import { THEME_ONE } from '../../constants/colors';
 
 export const NavBar = () => {
   const navigate = useNavigate();
@@ -17,48 +18,44 @@ export const NavBar = () => {
   };
 
   return (
-    <Bar>
-      <h1>Pokemon App </h1>
-      <BarButtons>
-        <Button
+    <PokeNavbar
+      expand="lg"
+      className="px-3"
+    >
+      <PokeNavbarTitle>Pokemon App</PokeNavbarTitle>
+      <BarButtons className="justify-content-end">
+        <PokeButton
           text="Add Card"
           onClick={() => {
             navigate(ADD_CARDS);
           }}
         />
-        <Button
+        <PokeButton
           text="View Cards"
           onClick={() => {
             navigate(CARDS);
           }}
         />
-        <Button
+        <PokeButton
           text="Logout"
           onClick={logout}
         />
       </BarButtons>
-    </Bar>
+    </PokeNavbar>
   );
 };
 
 const BarButtons = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: row;
-  width: 50vh;
-  justify-content: space-around;
   align-items: center;
-  height: 40px;
 `;
 
-const Bar = styled.div`
+const PokeNavbarTitle = styled(Navbar.Brand)`
+  color: white;
+`;
+
+const PokeNavbar = styled(Navbar)`
   background-color: ${THEME_ONE.barBackground};
-  padding-left: 10px;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  margin-botton: 5px;
-  height: 60px;
-  margin-bottom: 10px;
 `;

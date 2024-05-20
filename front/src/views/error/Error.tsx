@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { Button } from '../../components/button/Button';
+import { PokeButton } from '../../components/button/Button';
 import { FONTS } from '../../constants/size';
 import { ErrorHandlerContext } from '../../contexts/errorHandlerContext';
 import { useContext, useEffect } from 'react';
@@ -26,7 +26,7 @@ const ErrorView = ({ onClick, message }: ErrorViewProps) => {
           <ErrorMessage data-cy="Error-view-message">
             {errorContext?.error?.message}
           </ErrorMessage>
-          <Button
+          <PokeButton
             text="OK"
             onClick={onClick}
           />

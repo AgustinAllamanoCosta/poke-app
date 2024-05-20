@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { configuration } from '../config/appConfig';
 import { UserInformationContext } from '../contexts/userContext';
-import { NewCard } from '../types/types';
+import { NewCard, PokeCard } from '../types/types';
 
 export const useAPI = () => {
   const userInformation = useContext(UserInformationContext);
@@ -10,7 +10,7 @@ export const useAPI = () => {
   const getUserCards = async () => {
     console.group('User Crads');
     console.debug('userid', userInformation.userData?.id);
-    const backResponse = await axios.get(
+    const backResponse = await axios.get<PokeCard[]>(
       `${configuration.backendURL}/cards/user/${userInformation.userData?.id}`,
       {
         headers: {

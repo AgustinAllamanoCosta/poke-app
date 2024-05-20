@@ -1,13 +1,12 @@
-import styled from 'styled-components';
 import { useContext, useEffect, useState } from 'react';
 import { UserInformationContext } from '../../contexts/userContext';
 import { useNavigate } from 'react-router-dom';
-import { BATTLE } from '../../constants/routePaths';
-import GridLayout from 'react-grid-layout';
-import PokemonCard from '../../components/card/Card';
 import { useAPI } from '../../hooks/useApi';
 import { NavBar } from '../../components/bar/Bar';
 import { PokeCard } from '../../types/types';
+import { Form, FloatingLabel, Container, Row, Col } from 'react-bootstrap';
+import PokemonCard from '../../components/card/Card';
+import { BATTLE } from '../../constants/routePaths';
 
 type CardsViewProp = {
   selectPokemon: (pokemon: PokeCard) => void;
@@ -24,10 +23,6 @@ const CardsView = ({ selectPokemon }: CardsViewProp) => {
     undefined,
   );
   const [displayCards, setDisplayCards] = useState<PokeCard[]>([]);
-  const [layout, setLayout] = useState<GridLayout.Layout[]>([]);
-
-  const pokeCardIdTemplate: string = 'poke-card-';
-  const cardPerRow: number = 3;
 
   const loadCard = async () => {
     const cards = await getUserCards();
@@ -35,100 +30,147 @@ const CardsView = ({ selectPokemon }: CardsViewProp) => {
     setDisplayCards(cards);
   };
 
-  const generateLayout = () => {
-    const layout: Array<GridLayout.Layout> = [];
-    let initX: number = 0;
-    let initY: number = 0;
-
-    const cardWidth: number = 1;
-    const cardHeight: number = 1;
-
-    displayCards.forEach((pokeCard: PokeCard, index: number) => {
-      const newLayoutConf: GridLayout.Layout = {
-        i: `${pokeCardIdTemplate}${index}`,
-        x: initX,
-        y: initY,
-        w: cardWidth,
-        h: cardHeight,
-      };
-      layout.push(newLayoutConf);
-      if (initX === 0 || initX / cardWidth < cardPerRow) {
-        initX += cardWidth;
-      } else {
-        initX = 0;
-        initY += cardHeight;
-      }
-    });
-    console.debug('new layout', layout);
-    return layout;
-  };
-
   useEffect(() => {
     loadCard();
   }, []);
 
   useEffect(() => {
-    if (displayCards.length > 0) {
-      setLayout(generateLayout());
+    let filterCards: PokeCard[] = displayCards;
+    if (typeFilter) {
+      filterCards = displayCards.filter((card: PokeCard) => {
+        const pokeType: string = card.cardtype.toLowerCase();
+        return pokeType == typeFilter.toLowerCase();
+      });
     }
-  }, [displayCards]);
+
+    if (nameFilter) {
+      filterCards = displayCards.filter((card: PokeCard) => {
+        const pokeName: string = card.name.toLowerCase();
+        return pokeName.includes(nameFilter.toLowerCase());
+      });
+    }
+
+    if (expansionFilter) {
+      filterCards = displayCards.filter((card: PokeCard) => {
+        const pokeExpansion: string = card.expansion.toLowerCase();
+        return pokeExpansion.includes(expansionFilter.toLowerCase());
+      });
+    }
+
+    if (
+      (!nameFilter || nameFilter == '') &&
+      (!expansionFilter || expansionFilter == '') &&
+      (typeFilter == 'Select...' || !typeFilter)
+    ) {
+      setDisplayCards(userInformation.cards);
+      return;
+    }
+
+    setDisplayCards(filterCards);
+  }, [nameFilter, expansionFilter, typeFilter]);
 
   return (
     <>
       <NavBar />
-      <FilterBar>
-        <SearchInput placeholder="Search by Name" />
-        <SearchInput placeholder="Search by Expansion" />
-        <select
-          onChange={(data) => {
-            setTypeFilter(data.target.value);
-          }}
-        >
-          <option value="">Select...</option>
-          {displayCards.map((card: PokeCard) => {
-            return <option value={card.type}>{card.type}</option>;
-          })}
-        </select>
-      </FilterBar>
-      {displayCards && (
-        <GridLayout
-          layout={layout}
-          rowHeight={425}
-          width={1500}
-          cols={cardPerRow}
-          margin={[0, 0]}
-        >
-          {displayCards.map((cardData: PokeCard, index) => {
+      <Form>
+        <Form.Group className="py-3">
+          <Container>
+            <Row
+              xs={3}
+              lg={3}
+              md={3}
+            >
+              <Col>
+                <FloatingLabel
+                  controlId="floatingName"
+                  label="Filter by Name"
+                  className="mb-1 text-body-tertiary"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Filter by Name"
+                    onChange={(data) => {
+                      setNameFilter(data.target.value);
+                    }}
+                  />
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="floatingExpansion"
+                  label="Filter by Expansion"
+                  className="mb-1 text-body-tertiary"
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Filter by Expansion"
+                    onChange={(data) => {
+                      setExpansionFilter(data.target.value);
+                    }}
+                  />
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel
+                  controlId="floatingCardtype"
+                  label="Filter by Rarity"
+                  className="mb-1 text-body-tertiary"
+                >
+                  <Form.Select
+                    onChange={(data) => {
+                      setTypeFilter(data.target.value);
+                    }}
+                  >
+                    <option
+                      key={`firts-option`}
+                      value={undefined}
+                    >
+                      Select...
+                    </option>
+                    ;
+                    {userInformation.cards.map(
+                      (card: PokeCard, index: number) => {
+                        return (
+                          <option
+                            key={`${card.name}-${index}`}
+                            value={card.cardtype}
+                          >
+                            {card.cardtype}
+                          </option>
+                        );
+                      },
+                    )}
+                  </Form.Select>
+                </FloatingLabel>
+              </Col>
+            </Row>
+          </Container>
+        </Form.Group>
+      </Form>
+      <Container>
+        <Row>
+          {displayCards.map((pokeCard: PokeCard, index: number) => {
             return (
-              <div key={`${pokeCardIdTemplate}${index}`}>
+              <Col
+                xs={3}
+                key={`${pokeCard.name}-${index}`}
+              >
                 <PokemonCard
-                  cardData={cardData}
+                  key={`${pokeCard.name}-${index}`}
+                  imgSrc={undefined}
+                  cardData={pokeCard}
                   onClick={() => {
-                    selectPokemon(cardData);
+                    selectPokemon(pokeCard);
                     navigate(BATTLE);
                   }}
                 />
-              </div>
+              </Col>
             );
           })}
-        </GridLayout>
-      )}
+        </Row>
+      </Container>
     </>
   );
 };
-
-const FilterBar = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-evenly;
-  align-items: center;
-  height: 40px;
-  margin-bottom: 40px;
-`;
-
-const SearchInput = styled.input`
-  height: 20px;
-`;
 
 export default CardsView;
