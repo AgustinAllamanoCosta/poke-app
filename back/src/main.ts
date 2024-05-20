@@ -2,12 +2,23 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import pjson from '../package.json';
-import { ValidationPipe } from '@nestjs/common';
+import { NestApplicationOptions, ValidationPipe } from '@nestjs/common';
+import fs from 'fs';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
+  
+  const appOptions: NestApplicationOptions = {
     logger: ['error', 'log', 'debug', 'warn'],
-  });
+  };
+
+  if(process.env.environment === 'production'){
+    appOptions.httpsOptions = {
+      key: fs.readFileSync(__dirname +'/secrets/key.pem'),
+      cert: fs.readFileSync(__dirname +'/secrets/cert.pem'),
+    };
+  }
+
+  const app = await NestFactory.create(AppModule, appOptions);
 
   const config = new DocumentBuilder()
     .setTitle('Poken App Backend')
