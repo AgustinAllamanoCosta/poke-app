@@ -13,7 +13,7 @@ const UserContext = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    const rawLocalData: string | null | undefined= localStorage.getItem(key);
+    const rawLocalData: string | null | undefined = localStorage.getItem(key);
     if (rawLocalData && rawLocalData != 'undefined') {
       saveUserDataInApp(JSON.parse(rawLocalData));
     }

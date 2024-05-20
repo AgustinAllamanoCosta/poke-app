@@ -40,53 +40,90 @@ const AddCardsView = () => {
           <Card.Header>New Pokemon</Card.Header>
           <CardBody>
             <Form onSubmit={handleSubmit(onAdd)}>
-
-              <Form.Group className="mb-3" controlId="pokemonName">
+              <Form.Group
+                className="mb-3"
+                controlId="pokemonName"
+              >
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="Pikachu"
+                <Form.Control
+                  type="text"
+                  placeholder="Pikachu"
                   {...register('name', { required: true })}
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="pokemonHP">
+              <Form.Group
+                className="mb-3"
+                controlId="pokemonHP"
+              >
                 <Form.Label>HP Points</Form.Label>
-                <Form.Control type="number" placeholder="60"
-                  {...register('hp', { required: true, valueAsNumber: true })} />
+                <Form.Control
+                  type="number"
+                  placeholder="60"
+                  {...register('hp', { required: true, valueAsNumber: true })}
+                />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="pokemonType" >
+              <Form.Group
+                className="mb-3"
+                controlId="pokemonType"
+              >
                 <Form.Label>Type</Form.Label>
                 <Form.Select {...register('pokemonType', { required: true })}>
-                  <option key={`firts-option`} value={undefined} >
+                  <option
+                    key={`firts-option`}
+                    value={undefined}
+                  >
                     Select...
                   </option>
                   {Object.values(POKEMON_TYPE).map((value: string) => (
-                    <option key={value} value={value}>
+                    <option
+                      key={value}
+                      value={value}
+                    >
                       {value}
                     </option>
                   ))}
                 </Form.Select>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="pokemonCardType">
+              <Form.Group
+                className="mb-3"
+                controlId="pokemonCardType"
+              >
                 <Form.Label>Card Type</Form.Label>
                 <Form.Select {...register('cardtype', { required: true })}>
-                  <option key={`firts-option`} value={undefined}>
+                  <option
+                    key={`firts-option`}
+                    value={undefined}
+                  >
                     Select...
                   </option>
                   {Object.values(CARD_TYPE).map((value: string) => (
-                    <option key={value} value={value}>
+                    <option
+                      key={value}
+                      value={value}
+                    >
                       {value}
                     </option>
                   ))}
                 </Form.Select>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="pokemonWeaknessType">
+              <Form.Group
+                className="mb-3"
+                controlId="pokemonWeaknessType"
+              >
                 <Form.Label>Weakness to</Form.Label>
                 <Form.Select {...register('weaknesType', { required: false })}>
-                  <option key={`firts-option`} value={undefined}>
+                  <option
+                    key={`firts-option`}
+                    value={undefined}
+                  >
                     Select...
                   </option>
                   {Object.values(POKEMON_TYPE).map((value: string) => (
-                    <option key={value} value={value}>
+                    <option
+                      key={value}
+                      value={value}
+                    >
                       {value}
                     </option>
                   ))}
@@ -170,9 +207,7 @@ const AddCardsView = () => {
                   })}
                 />
               </Form.Group>
-              <Button type={'submit'}>
-                Add
-              </Button>
+              <Button type={'submit'}>Add</Button>
             </Form>
           </CardBody>
         </Card>

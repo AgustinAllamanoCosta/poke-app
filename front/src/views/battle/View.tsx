@@ -48,11 +48,13 @@ const BattleView = ({ pokemonCard }: BattleViewProps) => {
               <VsText>VS</VsText>
               <CardContent>
                 <Card.Header style={{ height: '65px' }}>
-                <Card.Title>
-                Battle against
-                </Card.Title>
+                  <Card.Title>Battle against</Card.Title>
                 </Card.Header>
-                <Card.Img src={'https://pbs.twimg.com/media/ERPDVqzWAAUwLRl?format=png&name=small'}/>
+                <Card.Img
+                  src={
+                    'https://pbs.twimg.com/media/ERPDVqzWAAUwLRl?format=png&name=small'
+                  }
+                />
                 <Card.Body>
                   <Form.Group
                     className="mb-3"
@@ -71,21 +73,35 @@ const BattleView = ({ pokemonCard }: BattleViewProps) => {
                         Select...
                       </option>
                       {userInformation.cards.map((card: PokeCard, index) => {
-                        return <option key={`${card.name}-${index}`} value={card.name}>{card.name}</option>;
+                        return (
+                          <option
+                            key={`${card.name}-${index}`}
+                            value={card.name}
+                          >
+                            {card.name}
+                          </option>
+                        );
                       })}
                     </Form.Select>
                   </Form.Group>
                 </Card.Body>
-                <ButtonContainer >
+                <ButtonContainer>
                   <Button onClick={getBattleResult}>Battle!!</Button>
                 </ButtonContainer>
               </CardContent>
-          </Body>
-          { showResult &&
-            <Alert variant={ result == true ? 'success' : 'danger'} onClose={() => setShowResult(false)} dismissible>
-              <Alert.Heading>{pokemonCard.name} { result == false && 'not' } defeat {rivalName}</Alert.Heading>
-            </Alert> 
-          }
+            </Body>
+            {showResult && (
+              <Alert
+                variant={result == true ? 'success' : 'danger'}
+                onClose={() => setShowResult(false)}
+                dismissible
+              >
+                <Alert.Heading>
+                  {pokemonCard.name} {result == false && 'not'} defeat{' '}
+                  {rivalName}
+                </Alert.Heading>
+              </Alert>
+            )}
           </>
         )}
       </Container>
