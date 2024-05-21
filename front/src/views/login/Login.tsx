@@ -8,13 +8,14 @@ const LoginView = () => {
 
   return (
     <Container className="d-flex vh-100">
-      <Row className="m-auto align-self-center ">
+      <Row className=" m-auto align-self-center ">
         <Col>
-          <Card className=" align-items-center">
-            <Card.Header>
-              <Card.Title>Pokemo Battle Cards</Card.Title>
+          <Card className="d-flex align-items-center mb-5" style={{ width: '20rem', height: '15rem'}} >
+            <Card.Header style={{ width: '100%' }} >
+            <Card.Title> Login </Card.Title>
+              <Card.Subtitle>Pokemo Battle Cards</Card.Subtitle>
             </Card.Header>
-            <Card.Body>
+            <Card.Body className="d-flex align-items-center" style={{ height: '100%' }}>
               <Button
                 style={{ backgroundColor: THEME_ONE.cardBackground }}
                 onClick={() => {

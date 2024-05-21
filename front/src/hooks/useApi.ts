@@ -61,7 +61,7 @@ export const useAPI = () => {
     );
     console.debug('Back response ', backResponse.data);
     console.groupEnd();
-    return backResponse.data;
+    return backResponse.status;
   };
 
   const battle = async (challengesPokemonId: string, rivalName: string) => {
