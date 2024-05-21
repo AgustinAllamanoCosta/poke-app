@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 config();
 
 export const BasicConfig: Configuration = {
-  environment: process.env.environment
+  environment: process.env.app_environment
     ? process.env.environment
     : 'no-config-loaded',
   database_host: process.env.POSTGRES_HOST ? process.env.POSTGRES_HOST : '',

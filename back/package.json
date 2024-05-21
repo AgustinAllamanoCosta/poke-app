@@ -30,7 +30,8 @@
     "sch:sync": "yarn typeorm schema:sync -d ./datanase.config.ts",
     "mig:run": "yarn typeorm migration:run -d ./database.config.ts",
     "mig:gen": "yarn typeorm migration:generate -d ./database.config.ts",
-    "docker:build": "docker build -t ghcr.io/agustinallamanocosta/poke-app:back ."
+    "docker:build": "docker build -t ghcr.io/agustinallamanocosta/poke-app:back .",
+    "docker:remove": "docker image rm ghcr.io/agustinallamanocosta/poke-app:back"
   },
   "dependencies": {
     "@nestjs/cli": "^10.0.0",

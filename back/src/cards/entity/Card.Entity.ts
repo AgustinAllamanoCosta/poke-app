@@ -5,10 +5,12 @@ import {
   Weakness,
   Resistance,
 } from '../../types/cards';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, Index } from 'typeorm';
 
 @Entity()
+@Index(['name','cardtype','pokemonType'], { unique: true})
 export class PokeCard {
+
   @Column()
   @PrimaryGeneratedColumn('uuid')
   public id: string;

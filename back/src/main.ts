@@ -10,7 +10,7 @@ async function bootstrap() {
     logger: ['error', 'log', 'debug', 'warn'],
   };
 
-  if (process.env.environment === 'production') {
+  if (process.env.app_environment == 'production') {
     appOptions.httpsOptions = {
       key: fs.readFileSync(__dirname + '/secrets/key.pem'),
       cert: fs.readFileSync(__dirname + '/secrets/cert.pem'),
