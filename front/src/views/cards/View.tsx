@@ -3,7 +3,7 @@ import { UserInformationContext } from '../../contexts/userContext';
 import { useNavigate } from 'react-router-dom';
 import { useAPI } from '../../hooks/useApi';
 import { NavBar } from '../../components/bar/Bar';
-import { PokeCard } from '../../types/types';
+import { CARD_TYPE, PokeCard } from '../../types/types';
 import { Form, FloatingLabel, Container, Row, Col } from 'react-bootstrap';
 import PokemonCard from '../../components/card/Card';
 import { BATTLE } from '../../constants/routePaths';
@@ -124,18 +124,14 @@ const CardsView = ({ selectPokemon }: CardsViewProp) => {
                       Select...
                     </option>
                     ;
-                    {userInformation.cards.map(
-                      (card: PokeCard, index: number) => {
-                        return (
-                          <option
-                            key={`${card.name}-${index}`}
-                            value={card.cardtype}
-                          >
-                            {card.cardtype}
-                          </option>
-                        );
-                      },
-                    )}
+                    {Object.values(CARD_TYPE).map((value: string) => (
+                      <option
+                        key={value}
+                        value={value}
+                      >
+                        {value}
+                      </option>
+                    ))}
                   </Form.Select>
                 </FloatingLabel>
               </Col>

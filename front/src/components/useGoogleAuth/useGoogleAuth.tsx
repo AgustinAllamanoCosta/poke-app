@@ -18,7 +18,7 @@ const GoogleAuthContext = ({
       ) : (
         <ErrorView
           onClick={() => {
-            console.log('Faltal error!');
+            console.error('Faltal error!');
           }}
           message="Looks like a env variable is missing clientId"
         />
