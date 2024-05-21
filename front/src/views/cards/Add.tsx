@@ -32,7 +32,6 @@ const AddCardsView = () => {
       data.resistancePoint = undefined;
     }
     const result = await addNewCard(data);
-    console.log(result);
     setShowResult(true);
     setResult(result === 200 || result === 201);
   };

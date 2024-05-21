@@ -26,11 +26,6 @@ const BattleView = ({ pokemonCard }: BattleViewProps) => {
       setShowResult(true);
     }
   };
-
-  useEffect(() => {
-    console.log(result);
-  }, [result]);
-
   return (
     <>
       <NavBar />
