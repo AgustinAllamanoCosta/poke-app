@@ -1,0 +1,29 @@
+version: '3'
+services:
+  db:
+    image: 'postgres:latest'
+    ports:
+      - 5432:5432
+    env_file:
+      - ./back/.env
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  back:
+    image: 'ghcr.io/agustinallamanocosta/poke-app:back'
+    depends_on:
+      - db
+    ports:
+      - 8081:3000
+    env_file:
+      - ./.env
+ front:
+    image: 'ghcr.io/agustinallamanocosta/poke-app:front'
+    depends_on:
+      - back
+    ports:
+      - 8080:8080
+    env_file:
+      - ./front/.env
+
+volumes:
+  db-data:
